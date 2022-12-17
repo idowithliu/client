@@ -1,6 +1,8 @@
 import * as React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { Home } from "../home";
+import { RegistryPage } from "../registry";
+import { Story } from "../story";
 import { NavBar } from "./nav";
 
 
@@ -22,6 +24,8 @@ export const _App = (): JSX.Element => {
 
                 <Routes>
                     <Route path="/" element={<Home />} />
+                    <Route path="/about" element={<Story />} />
+                    <Route path="/registry" element={<RegistryPage />} />
                 </Routes>
             </div>
 
