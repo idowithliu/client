@@ -1,7 +1,9 @@
 import * as React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { AuthProvider } from "../../util/auth";
 import { Home } from "../home";
 import { RegistryPage } from "../registry";
+import { Rsvp } from "../rsvp";
 import { Story } from "../story";
 import { NavBar } from "./nav";
 
@@ -24,6 +26,7 @@ export const _App = (): JSX.Element => {
 
                 <Routes>
                     <Route path="/" element={<Home />} />
+                    <Route path="/rsvp" element={<Rsvp />} />
                     <Route path="/about" element={<Story />} />
                     <Route path="/registry" element={<RegistryPage />} />
                 </Routes>
@@ -36,7 +39,9 @@ export const _App = (): JSX.Element => {
 export const App = (): JSX.Element => {
     return (
         <BrowserRouter>
-            <_App />
+            <AuthProvider>
+                <_App />
+            </AuthProvider>
         </BrowserRouter>
     );
 }

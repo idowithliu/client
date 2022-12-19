@@ -7,11 +7,12 @@ import '@fontsource/roboto/700.css';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import { ContentBox } from "../../util/misc";
 
 export const Story = (): JSX.Element => {
     return (
         <>
-            <Box sx={{ width: '100%', maxWidth: 800 }}>
+            <ContentBox>
                 <Typography variant="h1" gutterBottom>
                     h1. Heading
                 </Typography>
@@ -59,7 +60,7 @@ export const Story = (): JSX.Element => {
                 <Typography variant="overline" display="block" gutterBottom>
                     overline text
                 </Typography>
-            </Box>
+            </ContentBox>
         </>
     );
 }
