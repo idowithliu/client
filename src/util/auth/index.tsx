@@ -15,6 +15,8 @@ export interface Auth {
     invite: Invite;
     status: AuthStatus;
     setGuest: (idx: number, new_guest: Guest) => void;
+    setFocused: (id: number) => void;
+    refresh: () => void;
 }
 
 export const AuthContext = React.createContext<Auth>({} as Auth);
@@ -26,7 +28,7 @@ export const AuthProvider = (props: { children: React.ReactNode }): JSX.Element 
 
     const query: URLSearchParams = useQuery();
 
-    React.useEffect(() => {
+    const refresh = (): void => {
         if (status === AuthStatus.LOGGED_IN) return;
 
         let userID: string;
@@ -47,6 +49,10 @@ export const AuthProvider = (props: { children: React.ReactNode }): JSX.Element 
                 localStorage.removeItem("userID");
             });
         }
+    }
+
+    React.useEffect(() => {
+        refresh();
     }, []);
 
     const setGuest = (idx: number, new_guest: Guest): void => {
@@ -58,8 +64,12 @@ export const AuthProvider = (props: { children: React.ReactNode }): JSX.Element 
         });
     }
 
+    const setFocused = (id: number): void => {
+        setInvite({ ...invite, focused: id });
+    }
+
     return (
-        <AuthContext.Provider value={{ id: id, invite: invite, status: status, setGuest: setGuest }}>
+        <AuthContext.Provider value={{ id: id, invite: invite, status: status, setGuest: setGuest, setFocused: setFocused, refresh: refresh }}>
             {props.children}
         </AuthContext.Provider>
     );

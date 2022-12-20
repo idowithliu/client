@@ -8,17 +8,20 @@ import '@fontsource/roboto/700.css';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Alert, AlertColor, Button, Divider, Grid, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Modal, Stack, TextField } from "@mui/material";
+import { Alert, AlertColor, Button, Divider, FormControl, Grid, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Modal, Select, Stack, TextField } from "@mui/material";
 import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import GradingIcon from '@mui/icons-material/Grading';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import DoneIcon from '@mui/icons-material/Done';
 import SaveIcon from '@mui/icons-material/Save';
-import { Registry, RegistryItem } from "../../util/models";
+import { Guest, Registry, RegistryItem } from "../../util/models";
 
 // @ts-ignore
 import { baseURL } from "../../../config";
+import { Link } from "react-router-dom";
+import { Auth, AuthContext } from "../../util/auth";
 
 export const RegistryPage = (): JSX.Element => {
 
@@ -35,17 +38,26 @@ export const RegistryPage = (): JSX.Element => {
     };
 
     const RegistryItemElement = (props: { item: RegistryItem, index: number }): JSX.Element => {
+        let claimer: Guest | null = null;
+        if (session.invite.guests) {
+            for (let guest of session.invite.guests) {
+                if (guest.id === props.item.claimer_id) {
+                    claimer = guest; break;
+                }
+            }
+        }
         return (
             <ListItem disablePadding>
                 <ListItemButton onClick={(): void => {
-                    if (!!props.item.claimer) return;
+                    if (!!props.item.claimer_id || !session.invite.finished) return;
                     setClaiming(props.item.id);
                     setClaimingItem(props.item);
-                    setClaimerName("");
+                    setClaimerID(0);
                 }}>
                     <ListItemText primary={`${props.index}. ${props.item.name}`} />
+                    {claimer && <Typography variant="subtitle2">Claimed by: {claimer.name}</Typography>}
                     <ListItemIcon>
-                        {!props.item.claimer ? <CheckBoxOutlineBlankIcon /> : <CheckBoxIcon />}
+                        {!props.item.claimer_id ? <CheckBoxOutlineBlankIcon /> : (!claimer ? <DoneIcon /> : <CheckBoxIcon />)}
                     </ListItemIcon>
                 </ListItemButton>
             </ListItem>
@@ -88,7 +100,8 @@ export const RegistryPage = (): JSX.Element => {
     const submitClaimForm = (): void => {
         axios.post(`${baseURL}/api/registry/claim/`, {
             "id": claimingItem.id,
-            "claimer": claimerName,
+            "claimer_id": claimerID,
+            "uuid": session.invite.uuid,
         }).then((res) => {
             setAlertType("success");
             setAlertMessage(res.data.message);
@@ -105,9 +118,10 @@ export const RegistryPage = (): JSX.Element => {
     const [registries, setRegistries] = React.useState([] as Array<Registry>);
     const [claiming, setClaiming] = React.useState(-1);
     const [claimingItem, setClaimingItem] = React.useState({} as RegistryItem);
-    const [claimerName, setClaimerName] = React.useState("");
+    const [claimerID, setClaimerID] = React.useState(0);
     const [alertMessage, setAlertMessage] = React.useState("");
     const [alertType, setAlertType] = React.useState("");
+    const session: Auth = React.useContext(AuthContext);
 
     const refreshRegistries = (): void => {
         axios.get(`${baseURL}/api/registry/items/`, {}).then((res) => {
@@ -117,6 +131,14 @@ export const RegistryPage = (): JSX.Element => {
         });
     }
 
+    const getGuests = (): Array<JSX.Element> => {
+        let res = session.invite.guests.map((guest: Guest): JSX.Element => {
+            return <MenuItem key={guest.id} value={guest.id}>{guest.name}</MenuItem>;
+        });
+        //res.push(<MenuItem key={0} value={0}>{"[Unselected]"}</MenuItem>);
+        return res;
+    }
+
     React.useEffect((): void => {
         refreshRegistries();
     }, []);
@@ -124,6 +146,7 @@ export const RegistryPage = (): JSX.Element => {
     return (
         <>
             {alertMessage && <Alert severity={alertType as AlertColor} style={{ marginBottom: "1.5em" }}>{alertMessage}</Alert>}
+            {!session.invite.finished && <Alert severity="info" style={{ margin: "1em" }}><Link to="/rsvp">Please RSVP before claiming any registry items. (Click here for the RSVP page)</Link></Alert>}
             <Typography variant="h4" style={{ fontFamily: "Tenor Sans" }} gutterBottom>
                 Our Wish List
             </Typography>
@@ -154,16 +177,29 @@ export const RegistryPage = (): JSX.Element => {
                         Claim {claimingItem.name}?
                     </Typography>
                     <Typography variant="body1">
-                        <label htmlFor="claimer-name">To claim this registry item, please enter your name below:</label>
+                        <label htmlFor="claimer-name">To claim this registry item, please select your name below:</label>
                     </Typography>
                     <hr />
                     <form onSubmit={(ev) => {
                         ev.preventDefault();
                         submitClaimForm();
                     }}>
-                        <TextField required id="claimer-name" label="Name" variant="outlined" onChange={(ev) => {
-                            setClaimerName(ev.target.value);
-                        }} />
+                        <FormControl required fullWidth>
+                            <InputLabel id="claimer-name-label">Claimer Name</InputLabel>
+                            <Select
+                                id="claimer-name"
+                                value={claimerID}
+                                label="Claimer Name"
+                                onChange={(ev) => {
+                                    setClaimerID(parseInt(ev.target.value.toString()));
+                                }}
+                            >
+                                {
+                                    "guests" in session.invite &&
+                                    getGuests()
+                                }
+                            </Select>
+                        </FormControl>
                         <div className="form-row">
                             <Button variant="contained" type="submit" disableElevation>Claim!</Button>
                             <Button variant="outlined" onClick={(ev) => {

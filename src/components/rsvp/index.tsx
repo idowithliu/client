@@ -24,19 +24,7 @@ export const Rsvp = (): JSX.Element => {
     const session: Auth = React.useContext(AuthContext);
     const [alertMessage, setAlertMessage] = React.useState("");
     const [alertType, setAlertType] = React.useState("" as AlertColor);
-
-    // const [invite, setInvite] = React.useState({} as Invite);
-    // const [err, setErr] = React.useState(false);
-
-    // React.useEffect(() => {
-    //     if (!userID) return;
-    //     axios.get(`${baseURL}/api/invites/invites/${userID}`).then((res) => {
-    //         setInvite(res.data);
-    //         setErr(false);
-    //     }).catch(() => {
-    //         setErr(true);
-    //     });
-    // }, []);
+    const [clearing, setClearing] = React.useState(false);
 
     const GuestInfo = (props: { guest: Guest, index: number }): JSX.Element => {
         const guest = props.guest;
@@ -55,8 +43,14 @@ export const Rsvp = (): JSX.Element => {
                             disabled={!guest.is_attending}
                             id="outlined-disabled"
                             label="Dietary Restrictions (optional)"
-                            defaultValue=""
+                            defaultValue={guest.dietary_restrictions}
                             fullWidth={true}
+                            autoFocus={guest.id === session.invite.focused}
+                            onChange={(ev) => {
+                                const new_guest: Guest = { ...guest, dietary_restrictions: ev.target.value };
+                                session.setGuest(props.index, new_guest);
+                                session.setFocused(guest.id);
+                            }}
                         />
                     </FormGroup>
                 </div>
@@ -96,12 +90,32 @@ export const Rsvp = (): JSX.Element => {
                         }
                         <Button variant="contained" onClick={(ev) => {
                             ev.preventDefault();
-                            setAlertMessage("Submitted!");
-                            setAlertType("success");
-                            setTimeout((): void => {
-                                setAlertMessage("");
-                            }, 5000);
+
+                            for (let i = 0; i < session.invite.guests.length; i++) {
+                                const guest: Guest = session.invite.guests[i];
+                                if (guest.is_attending === null) {
+                                    session.setGuest(i, { ...guest, is_attending: false });
+                                }
+                            }
+
+                            axios.post(`${baseURL}/api/invites/rsvp/`, session.invite).then((res) => {
+                                setAlertType("success");
+                                setAlertMessage(res.data.message);
+                                session.refresh();
+                            }).catch((err) => {
+                                setAlertType("error");
+                                setAlertMessage(err.response.data.message);
+                            });
+
+                            if (!clearing) {
+                                setClearing(true);
+                                setTimeout((): void => {
+                                    setAlertMessage("");
+                                    setClearing(false);
+                                }, 8000);
+                            }
                         }}>Submit RSVP!</Button>
+                        {alertMessage && <Alert severity={alertType as AlertColor} style={{ marginBottom: "1.5em" }}>{alertMessage}</Alert>}
                     </>
                 );
         }
