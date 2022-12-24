@@ -10,6 +10,9 @@ import Typography from '@mui/material/Typography';
 import { ContentBox } from "../../util/misc";
 
 export const Story = (): JSX.Element => {
+    React.useEffect(() => {
+        document.title = "Our Story | Melanie and Andrew's Wedding Website";
+    }, []);
     return (
         <>
             <ContentBox>

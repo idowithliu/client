@@ -11,11 +11,10 @@ import Typography from '@mui/material/Typography';
 
 import { ContentBox, useQuery } from "../../util/misc";
 
-// @ts-ignore
-import { baseURL } from "../../../config";
 import { Guest, Invite } from "../../util/models";
 import { Auth, AuthContext, AuthStatus } from "../../util/auth";
 import { Alert, AlertColor, Button, Checkbox, Divider, FormControlLabel, FormGroup, TextField } from "@mui/material";
+import { Routes } from "../../util/routes";
 
 export const Rsvp = (): JSX.Element => {
     const query: URLSearchParams = useQuery();
@@ -25,6 +24,10 @@ export const Rsvp = (): JSX.Element => {
     const [alertMessage, setAlertMessage] = React.useState("");
     const [alertType, setAlertType] = React.useState("" as AlertColor);
     const [clearing, setClearing] = React.useState(false);
+
+    React.useEffect(() => {
+        document.title = "RSVP | Melanie and Andrew's Wedding Website";
+    }, []);
 
     const GuestInfo = (props: { guest: Guest, index: number }): JSX.Element => {
         const guest = props.guest;
@@ -39,19 +42,21 @@ export const Rsvp = (): JSX.Element => {
                             const new_guest = { ...guest, is_attending: ev.target.checked };
                             session.setGuest(props.index, new_guest);
                         }} />} label="Will be attending" />
-                        <TextField
-                            disabled={!guest.is_attending}
-                            id="outlined-disabled"
-                            label="Dietary Restrictions (optional)"
-                            defaultValue={guest.dietary_restrictions}
-                            fullWidth={true}
-                            autoFocus={guest.id === session.invite.focused}
-                            onChange={(ev) => {
-                                const new_guest: Guest = { ...guest, dietary_restrictions: ev.target.value };
-                                session.setGuest(props.index, new_guest);
-                                session.setFocused(guest.id);
-                            }}
-                        />
+                        {
+                            guest.is_attending &&
+                            <TextField
+                                id="outlined-disabled"
+                                label="Dietary Restrictions (optional)"
+                                defaultValue={guest.dietary_restrictions}
+                                fullWidth={true}
+                                autoFocus={guest.id === session.invite.focused}
+                                onChange={(ev) => {
+                                    const new_guest: Guest = { ...guest, dietary_restrictions: ev.target.value };
+                                    session.setGuest(props.index, new_guest);
+                                    session.setFocused(guest.id);
+                                }}
+                            />
+                        }
                     </FormGroup>
                 </div>
                 <br />
@@ -98,7 +103,7 @@ export const Rsvp = (): JSX.Element => {
                                 }
                             }
 
-                            axios.post(`${baseURL}/api/invites/rsvp/`, session.invite).then((res) => {
+                            axios.post(Routes.RSVP.SUBMIT, session.invite).then((res) => {
                                 setAlertType("success");
                                 setAlertMessage(res.data.message);
                                 session.refresh();

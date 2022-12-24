@@ -10,7 +10,7 @@ export const useQuery = (): URLSearchParams => {
 
 export const ContentBox = (props: { children: React.ReactNode }): JSX.Element => {
     return (
-        <Box sx={{ width: '100%', maxWidth: 1000, backgroundColor: "white", padding: "2em" }}>
+        <Box sx={{ width: '100%', maxWidth: 750, backgroundColor: "white", padding: "2em" }}>
             {props.children}
         </Box>
     );

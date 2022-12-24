@@ -18,10 +18,9 @@ import DoneIcon from '@mui/icons-material/Done';
 import SaveIcon from '@mui/icons-material/Save';
 import { Guest, Registry, RegistryItem } from "../../util/models";
 
-// @ts-ignore
-import { baseURL } from "../../../config";
 import { Link } from "react-router-dom";
 import { Auth, AuthContext } from "../../util/auth";
+import { Routes } from "../../util/routes";
 
 export const RegistryPage = (): JSX.Element => {
 
@@ -98,7 +97,7 @@ export const RegistryPage = (): JSX.Element => {
     }
 
     const submitClaimForm = (): void => {
-        axios.post(`${baseURL}/api/registry/claim/`, {
+        axios.post(Routes.REGISTRY.CLAIM, {
             "id": claimingItem.id,
             "claimer_id": claimerID,
             "uuid": session.invite.uuid,
@@ -124,7 +123,7 @@ export const RegistryPage = (): JSX.Element => {
     const session: Auth = React.useContext(AuthContext);
 
     const refreshRegistries = (): void => {
-        axios.get(`${baseURL}/api/registry/items/`, {}).then((res) => {
+        axios.get(Routes.REGISTRY.ITEMS, {}).then((res) => {
             setRegistries(res.data as Array<Registry>);
         }).catch((err) => {
             console.error("Error occurred while fetching registry:", err);
@@ -140,6 +139,7 @@ export const RegistryPage = (): JSX.Element => {
     }
 
     React.useEffect((): void => {
+        document.title = "Registry | Melanie and Andrew's Wedding Website";
         refreshRegistries();
     }, []);
 

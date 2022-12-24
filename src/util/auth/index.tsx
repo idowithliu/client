@@ -3,8 +3,7 @@ import { default as axios } from "axios";
 
 import { useQuery } from "../misc";
 import { Guest, Invite } from "../models";
-// @ts-ignore
-import { baseURL } from "../../../config";
+import { Routes } from "../routes";
 
 export enum AuthStatus {
     LOGGED_IN, NOT_FOUND, INVALID
@@ -29,8 +28,6 @@ export const AuthProvider = (props: { children: React.ReactNode }): JSX.Element 
     const query: URLSearchParams = useQuery();
 
     const refresh = (): void => {
-        if (status === AuthStatus.LOGGED_IN) return;
-
         let userID: string;
         if (query.has("userID")) {
             userID = query.get("userID")!;
@@ -39,7 +36,7 @@ export const AuthProvider = (props: { children: React.ReactNode }): JSX.Element 
             userID = localStorage.getItem("userID")!;
         }
         if (!!userID!) {
-            axios.get(`${baseURL}/api/invites/invites/${userID}`).then((res) => {
+            axios.get(`${Routes.RSVP.INVITE}/${userID}`).then((res) => {
                 setInvite(res.data);
                 setStatus(AuthStatus.LOGGED_IN);
                 setId(userID);
@@ -52,6 +49,7 @@ export const AuthProvider = (props: { children: React.ReactNode }): JSX.Element 
     }
 
     React.useEffect(() => {
+        if (status === AuthStatus.LOGGED_IN) return;
         refresh();
     }, []);
 

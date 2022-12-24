@@ -1,6 +1,9 @@
 import * as React from "react";
 
 export const Home = (): JSX.Element => {
+    React.useEffect(() => {
+        document.title = "Home | Melanie and Andrew's Wedding Website";
+    }, []);
     return (
         <>
             <div className="divider" />
