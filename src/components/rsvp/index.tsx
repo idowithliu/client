@@ -9,11 +9,11 @@ import '@fontsource/roboto/700.css';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import { ContentBox, useQuery } from "../../util/misc";
+import { ContentBox, useQuery, textTheme } from "../../util/misc";
 
 import { Guest, Invite } from "../../util/models";
 import { Auth, AuthContext, AuthStatus } from "../../util/auth";
-import { Alert, AlertColor, Button, Checkbox, Divider, FormControlLabel, FormGroup, TextField } from "@mui/material";
+import { Alert, AlertColor, Button, Checkbox, Divider, FormControlLabel, FormGroup, TextField, ThemeProvider } from "@mui/material";
 import { Routes } from "../../util/routes";
 
 export const Rsvp = (): JSX.Element => {
@@ -79,7 +79,7 @@ export const Rsvp = (): JSX.Element => {
             case AuthStatus.LOGGED_IN:
                 return (
                     <>
-                        <Typography variant="subtitle1" gutterBottom>
+                        <Typography variant="h6" gutterBottom>
                             Currently performing RSVP for the <strong>{session.invite.family_name}</strong> family.
                             <br />
                             <small>To switch to a different invite, please use the unique link provided to you in your wedding invitation.</small>
@@ -127,14 +127,14 @@ export const Rsvp = (): JSX.Element => {
     }
 
     return (
-        <>
+        <ThemeProvider theme={textTheme}>
             {alertMessage && <Alert severity={alertType as AlertColor} style={{ marginBottom: "1.5em" }}>{alertMessage}</Alert>}
             <ContentBox>
-                <Typography variant="h4" gutterBottom>
+                <Typography variant="h3" gutterBottom>
                     Welcome to the RSVP page!
                 </Typography>
                 <RsvpPage />
             </ContentBox>
-        </>
+        </ThemeProvider>
     );
 }

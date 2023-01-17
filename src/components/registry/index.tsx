@@ -8,7 +8,7 @@ import '@fontsource/roboto/700.css';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Alert, AlertColor, Button, Divider, FormControl, Grid, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Modal, Select, Stack, TextField } from "@mui/material";
+import { Alert, AlertColor, Button, Divider, FormControl, Grid, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Modal, Select, Stack, TextField, ThemeProvider } from "@mui/material";
 import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import GradingIcon from '@mui/icons-material/Grading';
@@ -17,6 +17,7 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import DoneIcon from '@mui/icons-material/Done';
 import SaveIcon from '@mui/icons-material/Save';
 import { Guest, Registry, RegistryItem } from "../../util/models";
+import { textTheme } from "../../util/misc";
 
 import { Link } from "react-router-dom";
 import { Auth, AuthContext } from "../../util/auth";
@@ -144,7 +145,7 @@ export const RegistryPage = (): JSX.Element => {
     }, []);
 
     return (
-        <>
+        <ThemeProvider theme={textTheme}>
             {alertMessage && <Alert severity={alertType as AlertColor} style={{ marginBottom: "1.5em" }}>{alertMessage}</Alert>}
             {!session.invite.finished && <Alert severity="info" style={{ margin: "1em" }}><Link to="/rsvp">Please RSVP before claiming any registry items. (Click here for the RSVP page)</Link></Alert>}
             <Typography variant="h4" style={{ fontFamily: "Tenor Sans" }} gutterBottom>
@@ -173,9 +174,11 @@ export const RegistryPage = (): JSX.Element => {
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={modalStyle}>
-                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                    <Typography id="modal-modal-title" variant="h5" component="h2">
                         Claim {claimingItem.name}?
                     </Typography>
+                    <Typography variant="subtitle1">Link to Purchasing Site: <a href={claimingItem.url}>{claimingItem.url}</a></Typography>
+                    <Divider /><hr />
                     <Typography variant="body1">
                         <label htmlFor="claimer-name">To claim this registry item, please select your name below:</label>
                     </Typography>
@@ -210,6 +213,6 @@ export const RegistryPage = (): JSX.Element => {
                     </form>
                 </Box>
             </Modal>
-        </>
+        </ThemeProvider>
     );
 }

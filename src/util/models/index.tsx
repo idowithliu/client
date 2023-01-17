@@ -6,6 +6,7 @@ export interface NavRoute {
 
 export interface RegistryItem {
     name: string;
+    url: string;
     id: number;
     price: number;
     claimer: string;

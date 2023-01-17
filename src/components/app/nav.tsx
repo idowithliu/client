@@ -5,9 +5,9 @@ import { NavRoute } from "../../util/models";
 export const NavBar = (): JSX.Element => {
     const routes: Array<NavRoute> = [
         { id: 1, url: "/", text: "Home" },
-        { id: 2, url: "/rsvp", text: "RSVP" },
         { id: 3, url: "/about", text: "Our Story" },
         { id: 4, url: "/faq", text: "Q & A" },
+        { id: 2, url: "/rsvp", text: "RSVP" },
         { id: 5, url: "/registry", text: "Registry" },
     ];
 

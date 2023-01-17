@@ -1,3 +1,4 @@
+import { Grid } from "@mui/material";
 import * as React from "react";
 
 export const Home = (): JSX.Element => {
@@ -8,7 +9,17 @@ export const Home = (): JSX.Element => {
         <>
             <div className="divider" />
             <div className="home-picture">
-                <img alt="Home Page Banner" width="100%" height="275" src="//www.theknot.com/tk-media/images/2cc3d3c6-0115-46ab-8912-6164a628d1c7~rt_auto-cr_0.0.549.275-rs_768.h?ordering=explicit" className="css-1ago99h"></img>
+                <Grid
+                    container
+                    spacing={0}
+                    direction="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    style={{ minHeight: '100vh' }}
+                >
+                    <img alt="Home Page Banner" width="60%" src="/resources/img/home.jpg" className="css-1ago99h"></img>
+                </Grid>
+
             </div>
         </>
     );
