@@ -55,6 +55,10 @@
     padding-bottom: 20px;
 }
 
+.headline-amp {
+    font-family: Milton_Two;
+}
+
 @media (min-width: 768px) {
     .box-center {
         display: block;
@@ -240,4 +244,12 @@
 
 .shadowed {
     box-shadow: 2px 2px 5px var(--mid-colour);
+}
+
+.headline-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 29px;
 }

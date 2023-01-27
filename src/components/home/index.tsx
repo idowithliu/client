@@ -76,7 +76,7 @@ export const Home = (): JSX.Element => {
                     </List>
 
                     <div className="home-picture shadowed" style={{ width: "60%" }}>
-                        <img alt="Venue animation" width="100%" src="/resources/img/animation.gif" className="css-1ago99h"></img>
+                        <img alt="Venue animation" width="100%" src="/resources/img/animation_1.gif" className="css-1ago99h"></img>
                     </div>
                 </Grid>
             </ContentBox>

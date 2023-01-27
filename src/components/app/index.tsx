@@ -1,10 +1,12 @@
 import * as React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "../../util/auth";
+import { Faq } from "../faq";
 import { Home } from "../home";
 import { RegistryPage } from "../registry";
 import { Rsvp } from "../rsvp";
 import { Story } from "../story";
+import { Footer } from "./footer";
 import { NavBar } from "./nav";
 
 
@@ -17,7 +19,9 @@ export const _App = (): JSX.Element => {
                 </picture>
 
                 <div className="box-center">
-                    <div className="headline">Melanie & Andrew</div>
+                    <div className="headline-row">
+                        <div className="headline">Melanie</div> <div className="headline-amp headline">&</div> <div className="headline">Andrew</div>
+                    </div>
                     <div className="date">are getting married on the ninth of September 2023</div>
                 </div>
 
@@ -26,12 +30,15 @@ export const _App = (): JSX.Element => {
 
                 <Routes>
                     <Route path="/" element={<Home />} />
+                    <Route path="/faq" element={<Faq />} />
                     <Route path="/rsvp" element={<Rsvp />} />
                     <Route path="/about" element={<Story />} />
                     <Route path="/registry" element={<RegistryPage />} />
                 </Routes>
-            </div>
 
+                {/* <Footer /> */}
+                <div style={{ height: "4em" }} />
+            </div>
         </>
     );
 }
