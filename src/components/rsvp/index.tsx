@@ -68,12 +68,12 @@ export const Rsvp = (): JSX.Element => {
         switch (session.status) {
             case AuthStatus.NOT_FOUND:
                 return (
-                    <Typography variant="subtitle1" gutterBottom>
+                    <Typography variant="h6" gutterBottom>
                         Please use the unique link provided in your wedding invitation to access your RSVP page.
                     </Typography>
                 )
             case AuthStatus.INVALID:
-                return (<Typography variant="subtitle1" gutterBottom>
+                return (<Typography variant="h6" gutterBottom>
                     Sorry, we couldn't find an invitation with this link. Please double check the link or contact us for a new one.
                 </Typography>);
             case AuthStatus.LOGGED_IN:

@@ -13,12 +13,12 @@ export const _App = (): JSX.Element => {
         <>
             <div className="page">
                 <picture className="banner">
-                    <img loading="eager" style={{ width: "100%" }} src="https://media-api.xogrp.com/images/4e6d4b00-022a-44af-aa38-577ff43cd1de~rt_auto-rs_1024.h?ordering=explicit" className="css-1ago99h" />
+                    {/* <img loading="eager" style={{ width: "100%" }} src="https://media-api.xogrp.com/images/4e6d4b00-022a-44af-aa38-577ff43cd1de~rt_auto-rs_1024.h?ordering=explicit" className="css-1ago99h" /> */}
                 </picture>
 
                 <div className="box-center">
                     <div className="headline">Melanie & Andrew</div>
-                    <div className="date">are getting married on <strong>September 9, 2023</strong></div>
+                    <div className="date">are getting married on the ninth of September 2023</div>
                 </div>
 
 

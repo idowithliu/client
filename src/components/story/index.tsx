@@ -23,34 +23,42 @@ export const Story = (): JSX.Element => {
         xs: 6
     }
 
+    const TextBox = (props: { children: string }): JSX.Element => {
+        return (<Grid item {...textSpec}>
+            <div className="centred">
+                <Typography variant="h6" style={{ textAlign: "justify" }}>
+                    {props.children}
+                </Typography>
+            </div>
+        </Grid>);
+    }
+
     return (
         <ThemeProvider theme={textTheme}>
             <ContentBox>
                 <Grid container spacing={2}>
-                    <Grid item {...textSpec}>
-                        <Typography variant="h6">
-                            To tell the love story of Melanie and Andrew,
-                            there’s one thing you should know:
-                            Melanie and Andrew have different versions of how they first met.
-                            If you asked Melanie, she would tell you that they met during one of their many varsity
-                            badminton practices at Western University. But if you asked Andrew,
-                            he would tell you that they met months earlier at a fundraising event held by varsity players.
-                            This may be one of the few times during their entire 7 year relationship where Melanie is willing
-                            to admit that Andrew may be possibly right.
-                        </Typography>
-                    </Grid>
+                    <TextBox>
+                        To tell the love story of Melanie and Andrew,
+                        there's one thing you should know:
+                        Melanie and Andrew have different versions of how they first met.
+                        If you asked Melanie, she would tell you that they met during one of their many varsity
+                        badminton practices at Western University. But if you asked Andrew,
+                        he would tell you that they met months earlier at a fundraising event held by varsity players.
+                        This may be one of the few times during their entire 7 year relationship where Melanie is willing
+                        to admit that Andrew may be possibly right.
+                    </TextBox>
                     <Grid item {...picSpec}>
-                        <img src="/resources/img/1.jpg" />
+                        <img src="/resources/img/1.jpg" className="shadowed" />
                     </Grid>
 
                     <Grid item {...picSpec}>
-                        <img src="/resources/img/2.jpg" />
+                        <img src="/resources/img/3.jpg" className="shadowed" />
                     </Grid>
                     <Grid item {...textSpec}>
-                        <Typography variant="h6">
+                        <Typography variant="h6" style={{ textAlign: "justify" }}>
                             Even though introductions were made and names were exchanged,
-                            it wasn’t until the end of badminton season, where Melanie and Andrew were paired together for a tournament,
-                            that Andrew finally captured Melanie’s attention with his badminton skills.
+                            it wasn't until the end of badminton season, where Melanie and Andrew were paired together for a tournament,
+                            that Andrew finally captured Melanie's attention with his badminton skills.
                             From there, Andrew proceeded to jump through multiple hoops to finally land the girl of his dreams.
                             He walked her home in the cold (her place was 45 minutes in the opposite direction),
                             he got his hands dirty making peanut butter cookies so that hers would stay clean,
@@ -59,7 +67,7 @@ export const Story = (): JSX.Element => {
                         </Typography>
                     </Grid>
                     <Grid item {...textSpec}>
-                        <Typography variant="h6">
+                        <Typography variant="h6" style={{ textAlign: "justify" }}>
                             Once they became official, their relationship was immediately tested, because Melanie was accepted to pharmacy school
                             at the University of Toronto, while Andrew was finishing his degree at Western University.
                             With endless phone calls and long drives for Andrew, they survived the year-long distance,
@@ -69,7 +77,7 @@ export const Story = (): JSX.Element => {
                         </Typography>
                     </Grid>
                     <Grid item {...picSpec}>
-                        <img src="/resources/img/3.jpg" />
+                        <img src="/resources/img/4.jpg" className="shadowed" />
                     </Grid>
                 </Grid>
             </ContentBox>

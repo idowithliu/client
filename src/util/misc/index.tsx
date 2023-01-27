@@ -10,7 +10,7 @@ export const useQuery = (): URLSearchParams => {
 
 export const ContentBox = (props: { children: React.ReactNode }): JSX.Element => {
     return (
-        <Box sx={{ width: '100%', maxWidth: 750, backgroundColor: "white", padding: "2em", fontFamily: "Cormorant Garamond" }}>
+        <Box className="shadowed" sx={{ width: '100%', maxWidth: 750, backgroundColor: "white", padding: "2em", fontFamily: "Cormorant Garamond", boxShadow: "60px -16px teal" }}>
             {props.children}
         </Box>
     );
@@ -19,7 +19,8 @@ export const ContentBox = (props: { children: React.ReactNode }): JSX.Element =>
 export const textTheme: Theme = createTheme({
     typography: {
         fontFamily: [
-            'Cormorant_Garamond'
+            'Cormorant Garamond',
+            'serif'
         ].join(','),
     },
 });

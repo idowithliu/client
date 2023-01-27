@@ -14,14 +14,8 @@
     src: url('/resources/fonts/Milton_Two.otf');
 }
 
-@font-face {
-    font-family: Cormorant_Garamond;
-    src: url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond&display=swap');
-    font-size: 30px;
-}
-
 .background {
-    background-image:url(https://media-api.xogrp.com/images/ee86ee89-f1d8-4018-bd53-5e0958e43230~rt_auto-rs_800.h?ordering=explicit);
+    background-image:url('/resources/img/background.jpg');
     background-color:#FAF9F9;
     -webkit-background-position:top center;
     background-position:top center;
@@ -41,11 +35,11 @@
     line-height: 1;
     margin: 8px 0;
     font-family: Audrey;
-    letter-spacing: -2px;
+    letter-spacing: 0.5px;
     color: #4D4D4D;
-    font-size: 40px;
+    font-size: 28.5px;
     font-weight: 500;
-    /* text-transform: uppercase; */
+    text-transform: uppercase; 
 }
 
 .headline {
@@ -212,8 +206,8 @@
 @media (min-width: 768px) {
     .home-picture {
         display: block;
-        padding-left: 20px;
-        padding-right: 20px;
+        padding-left: 0px;
+        padding-right: 0px;
         max-width: 1200px;
     }
 }
@@ -228,4 +222,22 @@
     flex-direction: row;
     align-items: center;
     flex-wrap: wrap;
+}
+
+.centred {
+    /* display: flex;
+    flex-direction: column;
+    align-items: center; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+:root {
+    --mid-colour: #8f6638;
+}
+
+.shadowed {
+    box-shadow: 2px 2px 5px var(--mid-colour);
 }
