@@ -156,6 +156,19 @@ export const Emails = (): JSX.Element => {
                                 invite_url: url(string)<br />
                                 email: string<br />
                             </code>
+
+                            {/* <Box className="shadowed" style={{ display: "flex", flexDirection: "column", gap: "1.5em", padding: "1em" }}>
+                                <Button variant="contained" style={{ width: "fit-content" }} onClick={(ev) => {
+                                    ev.preventDefault();
+
+                                }}>Fetch invites</Button>
+                                <Typography variant="h6">Invite list:</Typography>
+                                <div style={{ display: "flex", flexDirection: "column" }}>
+                                    {inviteList.map((invite: Invite): JSX.Element => {
+                                        return <code>{invite.family_name} ({invite.email})</code>
+                                    })}
+                                </div>
+                            </Box> */}
                         </Grid>
                     </form>
                 </ContentBox>
