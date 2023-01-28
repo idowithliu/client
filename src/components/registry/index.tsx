@@ -8,16 +8,18 @@ import '@fontsource/roboto/700.css';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Alert, AlertColor, Button, Divider, FormControl, Grid, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Modal, Select, Stack, TextField, ThemeProvider } from "@mui/material";
+import { Alert, AlertColor, Button, Divider, FormControl, Grid, IconButton, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Modal, Select, Snackbar, Stack, TextField, ThemeProvider } from "@mui/material";
 import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import GradingIcon from '@mui/icons-material/Grading';
+import CardGiftcardIcon from '@mui/icons-material/CardGiftcard';
 import CheckBoxOutlineBlankIcon from '@mui/icons-material/CheckBoxOutlineBlank';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import DoneIcon from '@mui/icons-material/Done';
 import SaveIcon from '@mui/icons-material/Save';
+import CloseIcon from '@mui/icons-material/Close';
 import { Guest, Registry, RegistryItem } from "../../util/models";
-import { textTheme } from "../../util/misc";
+import { ContentBox, PasswordProtected, textTheme } from "../../util/misc";
 
 import { Link } from "react-router-dom";
 import { Auth, AuthContext } from "../../util/auth";
@@ -54,8 +56,8 @@ export const RegistryPage = (): JSX.Element => {
                     setClaimingItem(props.item);
                     setClaimerID(0);
                 }}>
-                    <ListItemText primary={`${props.index}. ${props.item.name}`} />
-                    {claimer && <Typography variant="subtitle2">Claimed by: {claimer.name}</Typography>}
+                    <ListItemText primary={<Typography variant="h6">{`${props.index}. ${props.item.name}`}</Typography>} />
+                    {claimer && <Typography variant="body1">Claimed by: {claimer.name}</Typography>}
                     <ListItemIcon>
                         {!props.item.claimer_id ? <CheckBoxOutlineBlankIcon /> : (!claimer ? <DoneIcon /> : <CheckBoxIcon />)}
                     </ListItemIcon>
@@ -73,8 +75,8 @@ export const RegistryPage = (): JSX.Element => {
                             <ListItemIcon>
                                 <GradingIcon />
                             </ListItemIcon>
-                            <ListItemText primary={props.registry.name} />
-                            <Typography align="right" variant="subtitle2" paddingRight={"1.5rem"}>Claimed</Typography>
+                            <ListItemText primary={<Typography variant="h5">{props.registry.name}</Typography>} />
+                            <Typography align="right" variant="body1" paddingRight={"1.5rem"}>Claimed</Typography>
                         </ListItem>
                     </List>
                 </nav>
@@ -90,14 +92,12 @@ export const RegistryPage = (): JSX.Element => {
         );
     };
 
-    const handleClose = (): void => {
-        setClaiming(-1);
-        setTimeout((): void => {
-            setAlertMessage("");
-        }, 10000);
-    }
-
     const submitClaimForm = (): void => {
+        if (claimerID === 0) {
+            setAlertType("error");
+            setAlertMessage("Please select a claimer name from the dropdown");
+            return;
+        }
         axios.post(Routes.REGISTRY.CLAIM, {
             "id": claimingItem.id,
             "claimer_id": claimerID,
@@ -106,12 +106,12 @@ export const RegistryPage = (): JSX.Element => {
             setAlertType("success");
             setAlertMessage(res.data.message);
             refreshRegistries();
-            handleClose();
+            setClaiming(-1);
         }).catch((err) => {
             setAlertType("error");
             setAlertMessage(err.response.data.message);
             refreshRegistries();
-            handleClose();
+            setClaiming(-1);
         });
     }
 
@@ -120,7 +120,7 @@ export const RegistryPage = (): JSX.Element => {
     const [claimingItem, setClaimingItem] = React.useState({} as RegistryItem);
     const [claimerID, setClaimerID] = React.useState(0);
     const [alertMessage, setAlertMessage] = React.useState("");
-    const [alertType, setAlertType] = React.useState("");
+    const [alertType, setAlertType] = React.useState("info" as AlertColor);
     const session: Auth = React.useContext(AuthContext);
 
     const refreshRegistries = (): void => {
@@ -144,29 +144,52 @@ export const RegistryPage = (): JSX.Element => {
         refreshRegistries();
     }, []);
 
-    return (
-        <ThemeProvider theme={textTheme}>
-            {alertMessage && <Alert severity={alertType as AlertColor} style={{ marginBottom: "1.5em" }}>{alertMessage}</Alert>}
-            {!session.invite.finished && <Alert severity="info" style={{ margin: "1em" }}><Link to="/rsvp">Please RSVP before claiming any registry items. (Click here for the RSVP page)</Link></Alert>}
-            <Typography variant="h4" style={{ fontFamily: "Tenor Sans" }} gutterBottom>
-                Our Wish List
-            </Typography>
-            <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                {registries.length > 0 ? registries.map((registry: Registry, index: number): JSX.Element => {
-                    return <RegistryElement registry={registry} index={index} key={index} />
-                }) :
-                    <nav aria-label="main mailbox folders">
-                        <List>
-                            <ListItem disablePadding>
-                                <ListItemIcon>
-                                    <GradingIcon />
-                                </ListItemIcon>
-                                <ListItemText primary={"Registry coming soon!"} />
-                            </ListItem>
-                        </List>
-                    </nav>}
-            </Box>
+    const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway' || reason === 'backdropClick') {
+            return;
+        }
 
+        setAlertMessage("");
+    };
+
+    const action = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleClose}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    );
+
+    return (
+        <>
+            <ThemeProvider theme={textTheme}>
+                <PasswordProtected card>
+                    {!session.invite.finished && <Alert severity="info" style={{ margin: "1em" }}><Link to="/rsvp">Please RSVP before claiming any registry items. (Click here for the RSVP page)</Link></Alert>}
+                    <Typography variant="h4" gutterBottom>
+                        Our Wish List
+                    </Typography>
+                    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                        {registries.length > 0 ? registries.map((registry: Registry, index: number): JSX.Element => {
+                            return <RegistryElement registry={registry} index={index} key={index} />
+                        }) :
+                            <nav aria-label="main mailbox folders">
+                                <List>
+                                    <ListItem disablePadding>
+                                        <ListItemIcon>
+                                            <GradingIcon />
+                                        </ListItemIcon>
+                                        <ListItemText primary={<Typography variant="h6">Registry coming soon!</Typography>} />
+                                    </ListItem>
+                                </List>
+                            </nav>}
+                    </Box>
+                </PasswordProtected>
+            </ThemeProvider>
             <Modal
                 open={claiming >= 0}
                 onClose={handleClose}
@@ -177,8 +200,8 @@ export const RegistryPage = (): JSX.Element => {
                     <Typography id="modal-modal-title" variant="h5" component="h2">
                         Claim {claimingItem.name}?
                     </Typography>
-                    <Typography variant="subtitle1">Link to Purchasing Site: <a href={claimingItem.url}>{claimingItem.url}</a></Typography>
-                    <Divider /><hr />
+                    <Typography variant="subtitle1">Link to Purchasing Site: <a target="_blank" href={claimingItem.url}>{claimingItem.url}</a></Typography>
+                    <Divider /><hr /><br />
                     <Typography variant="body1">
                         <label htmlFor="claimer-name">To claim this registry item, please select your name below:</label>
                     </Typography>
@@ -207,12 +230,24 @@ export const RegistryPage = (): JSX.Element => {
                             <Button variant="contained" type="submit" disableElevation>Claim!</Button>
                             <Button variant="outlined" onClick={(ev) => {
                                 ev.preventDefault();
-                                handleClose();
+                                setClaiming(-1);
                             }}>Cancel</Button>
                         </div>
                     </form>
                 </Box>
             </Modal>
-        </ThemeProvider>
+
+            <Snackbar
+                open={!!alertMessage}
+                autoHideDuration={10000}
+                onClose={handleClose}
+                message={alertMessage}
+                action={action}
+            >
+                <Alert onClose={handleClose} severity={alertType} sx={{ width: '100%' }}>
+                    {alertMessage}
+                </Alert>
+            </Snackbar>
+        </>
     );
 }

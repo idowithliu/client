@@ -13,8 +13,10 @@ import { ContentBox, useQuery, textTheme } from "../../util/misc";
 
 import { Guest, Invite } from "../../util/models";
 import { Auth, AuthContext, AuthStatus } from "../../util/auth";
-import { Alert, AlertColor, Button, Checkbox, Divider, FormControlLabel, FormGroup, TextField, ThemeProvider } from "@mui/material";
+import { Alert, AlertColor, Button, Checkbox, Divider, FormControlLabel, FormGroup, IconButton, Snackbar, TextField, ThemeProvider } from "@mui/material";
 import { Routes } from "../../util/routes";
+
+import CloseIcon from '@mui/icons-material/Close';
 
 export const Rsvp = (): JSX.Element => {
     const query: URLSearchParams = useQuery();
@@ -22,8 +24,12 @@ export const Rsvp = (): JSX.Element => {
 
     const session: Auth = React.useContext(AuthContext);
     const [alertMessage, setAlertMessage] = React.useState("");
-    const [alertType, setAlertType] = React.useState("" as AlertColor);
-    const [clearing, setClearing] = React.useState(false);
+    const [alertType, setAlertType] = React.useState("info" as AlertColor);
+
+    const alert = (message: string, type: AlertColor): void => {
+        setAlertType(type);
+        setAlertMessage(message);
+    }
 
     React.useEffect(() => {
         document.title = "RSVP | Melanie and Andrew's Wedding Website";
@@ -38,10 +44,16 @@ export const Rsvp = (): JSX.Element => {
                 </Typography>
                 <div className="form-row">
                     <FormGroup style={{ width: "100%" }}>
-                        <FormControlLabel control={<Checkbox defaultChecked={guest.is_attending} onChange={(ev) => {
-                            const new_guest = { ...guest, is_attending: ev.target.checked };
-                            session.setGuest(props.index, new_guest);
-                        }} />} label="Will be attending" />
+                        <div className="form-row">
+                            <FormControlLabel control={<Checkbox defaultChecked={!(guest.is_attending === null) && guest.is_attending} onChange={(ev) => {
+                                const new_guest = { ...guest, is_attending: true };
+                                session.setGuest(props.index, new_guest);
+                            }} />} label="Will be attending" />
+                            <FormControlLabel control={<Checkbox defaultChecked={!(guest.is_attending === null) && !guest.is_attending} onChange={(ev) => {
+                                const new_guest = { ...guest, is_attending: false };
+                                session.setGuest(props.index, new_guest);
+                            }} />} label={<>Will <strong>not</strong> be attending</>} />
+                        </div>
                         {
                             guest.is_attending &&
                             <TextField
@@ -99,42 +111,67 @@ export const Rsvp = (): JSX.Element => {
                             for (let i = 0; i < session.invite.guests.length; i++) {
                                 const guest: Guest = session.invite.guests[i];
                                 if (guest.is_attending === null) {
-                                    session.setGuest(i, { ...guest, is_attending: false });
+                                    // session.setGuest(i, { ...guest, is_attending: false });
+                                    alert(`Please choose an option for guest ${guest.name}`, "error");
+                                    return;
                                 }
                             }
 
                             axios.post(Routes.RSVP.SUBMIT, session.invite).then((res) => {
-                                setAlertType("success");
-                                setAlertMessage(res.data.message);
+                                alert(res.data.message, "success");
                                 session.refresh();
                             }).catch((err) => {
                                 setAlertType("error");
                                 setAlertMessage(err.response.data.message);
                             });
-
-                            if (!clearing) {
-                                setClearing(true);
-                                setTimeout((): void => {
-                                    setAlertMessage("");
-                                    setClearing(false);
-                                }, 8000);
-                            }
                         }}>Submit RSVP!</Button>
-                        {alertMessage && <Alert severity={alertType as AlertColor} style={{ marginBottom: "1.5em" }}>{alertMessage}</Alert>}
                     </>
                 );
         }
     }
 
+    const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setAlertMessage("");
+    };
+
+    const action = (
+        <React.Fragment>
+            <IconButton
+                size="small"
+                aria-label="close"
+                color="inherit"
+                onClick={handleClose}
+            >
+                <CloseIcon fontSize="small" />
+            </IconButton>
+        </React.Fragment>
+    );
+
     return (
-        <ThemeProvider theme={textTheme}>
-            {alertMessage && <Alert severity={alertType as AlertColor} style={{ marginBottom: "1.5em" }}>{alertMessage}</Alert>}
-            <ContentBox>
-                <Typography variant="h3" gutterBottom>
-                    Welcome to the RSVP page!
-                </Typography>
-                <RsvpPage />
-            </ContentBox>
-        </ThemeProvider>
+        <>
+            <ThemeProvider theme={textTheme}>
+                <ContentBox>
+                    <Typography variant="h3" gutterBottom>
+                        Welcome to the RSVP page!
+                    </Typography>
+                    <RsvpPage />
+                </ContentBox>
+            </ThemeProvider>
+            <Snackbar
+                open={!!alertMessage}
+                autoHideDuration={10000}
+                onClose={handleClose}
+                message={alertMessage}
+                action={action}
+            >
+                <Alert onClose={handleClose} severity={alertType} sx={{ width: '100%' }}>
+                    {alertMessage}
+                </Alert>
+            </Snackbar>
+        </>
     );
 }

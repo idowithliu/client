@@ -51,7 +51,7 @@
     font-weight: bold;
     /* text-transform: uppercase; */
     letter-spacing: 3px;
-    padding-top: 80px;
+    padding-top: 70px;
     padding-bottom: 20px;
 }
 
@@ -249,7 +249,11 @@
 .headline-row {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
     gap: 29px;
+}
+
+#faq a:hover {
+    text-decoration: underline;
 }
