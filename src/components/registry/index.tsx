@@ -169,7 +169,7 @@ export const RegistryPage = (): JSX.Element => {
         <>
             <ThemeProvider theme={textTheme}>
                 <PasswordProtected card>
-                    {!session.invite.finished && <Alert severity="info" style={{ margin: "1em" }}><Link to="/rsvp">Please RSVP before claiming any registry items. (Click here for the RSVP page)</Link></Alert>}
+                    {!session.invite.finished && <Alert severity="info" style={{ margin: "1em" }}><Link to="/rsvp" style={{ fontSize: "larger" }}>Please RSVP before claiming any registry items. (Click here for the RSVP page)</Link></Alert>}
                     {alertMessage && <Alert severity={alertType as AlertColor} style={{ margin: "1.5em" }}>{alertMessage}</Alert>}
                     <Typography variant="h4" gutterBottom>
                         Our Wish List
@@ -201,6 +201,7 @@ export const RegistryPage = (): JSX.Element => {
                     <Typography id="modal-modal-title" variant="h5" component="h2">
                         Claim {claimingItem.name}?
                     </Typography>
+                    <br />
                     <Typography variant="subtitle1">Link to Purchasing Site: <a target="_blank" href={claimingItem.url}>{claimingItem.url}</a></Typography>
                     <Divider /><hr /><br />
                     <Typography variant="body1">
@@ -227,7 +228,7 @@ export const RegistryPage = (): JSX.Element => {
                                 }
                             </Select>
                         </FormControl>
-                        <div className="form-row">
+                        <div className="form-row" style={{ marginTop: "1em" }}>
                             <Button variant="contained" type="submit" disableElevation>Claim!</Button>
                             <Button variant="outlined" onClick={(ev) => {
                                 ev.preventDefault();
