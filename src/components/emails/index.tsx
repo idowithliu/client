@@ -31,8 +31,8 @@ export const Emails = (): JSX.Element => {
     React.useEffect((): void => {
         document.title = "Emails | Melanie and Andrew's Wedding Website";
 
-        setUsername(localStorage.getItem("username")!);
-        setPassword(localStorage.getItem("password")!);
+        setUsername(localStorage.getItem("account_username")!);
+        setPassword(localStorage.getItem("account_password")!);
     }, []);
 
     const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
@@ -97,7 +97,7 @@ export const Emails = (): JSX.Element => {
                                     fullWidth={true}
                                     onChange={(ev) => {
                                         setUsername(ev.target.value);
-                                        localStorage.setItem("username", ev.target.value);
+                                        localStorage.setItem("account_username", ev.target.value);
                                     }}
                                 />
                             </div>
@@ -107,12 +107,12 @@ export const Emails = (): JSX.Element => {
                                 <TextField
                                     value={password}
                                     id="password"
-                                    label="Username"
+                                    label="Password"
                                     fullWidth={true}
                                     type="password"
                                     onChange={(ev) => {
                                         setPassword(ev.target.value);
-                                        localStorage.setItem("password", ev.target.value);
+                                        localStorage.setItem("account_password", ev.target.value);
                                     }}
                                 />
                             </div>

@@ -170,6 +170,7 @@ export const RegistryPage = (): JSX.Element => {
             <ThemeProvider theme={textTheme}>
                 <PasswordProtected card>
                     {!session.invite.finished && <Alert severity="info" style={{ margin: "1em" }}><Link to="/rsvp">Please RSVP before claiming any registry items. (Click here for the RSVP page)</Link></Alert>}
+                    {alertMessage && <Alert severity={alertType as AlertColor} style={{ margin: "1.5em" }}>{alertMessage}</Alert>}
                     <Typography variant="h4" gutterBottom>
                         Our Wish List
                     </Typography>

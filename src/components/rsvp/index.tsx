@@ -125,6 +125,7 @@ export const Rsvp = (): JSX.Element => {
                                 setAlertMessage(err.response.data.message);
                             });
                         }}>Submit RSVP!</Button>
+                        {alertMessage && <Alert severity={alertType as AlertColor} style={{ margin: "1.5em" }}>{alertMessage}</Alert>}
                     </>
                 );
         }
