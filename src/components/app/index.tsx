@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import { AuthProvider } from "../../util/auth";
+import { Emails } from "../emails";
 import { Faq } from "../faq";
 import { Home } from "../home";
 import { RegistryPage } from "../registry";
@@ -34,6 +35,8 @@ export const _App = (): JSX.Element => {
                     <Route path="/rsvp" element={<Rsvp />} />
                     <Route path="/about" element={<Story />} />
                     <Route path="/registry" element={<RegistryPage />} />
+
+                    <Route path="/emails" element={<Emails />} />
                 </Routes>
 
                 {/* <Footer /> */}

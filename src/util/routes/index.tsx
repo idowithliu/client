@@ -9,6 +9,7 @@ export const Routes = {
     },
     RSVP: {
         SUBMIT: `${BASEURL}/api/invites/rsvp/`,
-        INVITE: `${BASEURL}/api/invites/invites`
+        INVITE: `${BASEURL}/api/invites/invites`,
+        EMAILS: `${BASEURL}/api/invites/send-emails/`
     }
 }
