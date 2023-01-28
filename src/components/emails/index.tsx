@@ -17,6 +17,7 @@ import { Routes } from "../../util/routes";
 
 import CodeMirror from '@uiw/react-codemirror';
 import { html } from '@codemirror/lang-html';
+import { Invite } from "../../util/models";
 
 export const Emails = (): JSX.Element => {
     const [alertMessage, setAlertMessage] = React.useState("");
@@ -28,12 +29,27 @@ export const Emails = (): JSX.Element => {
     const [content, setContent] = React.useState("");
     const [all, setAll] = React.useState(false);
 
+    const [inviteList, setInviteList] = React.useState([] as Array<Invite>);
+    const [confirming, setConfirming] = React.useState(false);
+
     React.useEffect((): void => {
         document.title = "Emails | Melanie and Andrew's Wedding Website";
 
         setUsername(localStorage.getItem("account_username")!);
         setPassword(localStorage.getItem("account_password")!);
     }, []);
+
+    const modalStyle = {
+        position: 'absolute' as 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+    };
 
     const handleClose = (event: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway' || reason === 'backdropClick') {
@@ -71,17 +87,7 @@ export const Emails = (): JSX.Element => {
                 <ContentBox>
                     <form onSubmit={(ev): void => {
                         ev.preventDefault();
-                        axios.post(Routes.RSVP.EMAILS, {
-                            username: username,
-                            password: password,
-                            all_emails: all,
-                            subject: subject,
-                            email_content: content
-                        }).then((res): void => {
-                            alert(res.data.message, "success");
-                        }).catch((err) => {
-                            alert(err.response.data.message, "error")
-                        });
+                        setConfirming(true);
                     }}>
                         <Grid
                             container
@@ -154,6 +160,45 @@ export const Emails = (): JSX.Element => {
                     </form>
                 </ContentBox>
             </ThemeProvider>
+
+            <Modal
+                open={confirming}
+                onClose={handleClose}
+                aria-labelledby="modal-modal-title"
+                aria-describedby="modal-modal-description"
+            >
+                <Box sx={modalStyle}>
+                    <Typography id="modal-modal-title" variant="h6" component="h2">
+                        Are you sure you would like to send the invitation emails?
+                    </Typography>
+                    <div style={{ height: "30px" }} />
+                    <form onSubmit={(ev) => {
+                        ev.preventDefault();
+                        axios.post(Routes.RSVP.EMAILS, {
+                            username: username,
+                            password: password,
+                            all_emails: all,
+                            subject: subject,
+                            email_content: content
+                        }).then((res): void => {
+                            alert(res.data.message, "success");
+                            setConfirming(false);
+                        }).catch((err) => {
+                            alert(err.response.data.message, "error");
+                            setConfirming(false);
+                        });
+                    }}>
+                        <div className="form-row" style={{ gap: "10px" }}>
+                            <Button variant="contained" type="submit" disableElevation>Send!</Button>
+                            <Button variant="outlined" onClick={(ev) => {
+                                ev.preventDefault();
+                                alert("Email sending canceled", "info")
+                                setConfirming(false);
+                            }}>Cancel</Button>
+                        </div>
+                    </form>
+                </Box>
+            </Modal>
 
             <Snackbar
                 open={!!alertMessage}

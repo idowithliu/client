@@ -31,4 +31,5 @@ export interface Invite {
     uuid: string;
     focused: number;
     finished: boolean;
+    email: string;
 }
