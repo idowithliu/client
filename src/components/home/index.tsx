@@ -57,7 +57,7 @@ export const Home = (): JSX.Element => {
                                         </Avatar>
                                     </ListItemAvatar>
                                     <ListItemText primary={<Typography variant="h5">Venue</Typography>} secondary={<Typography variant="body1">Sue-Ann Staff Estate Winery</Typography>} />
-                                    <Button onClick={() => open("https://www.google.com/maps/place/Sue-Ann+Staff+Estate+Winery/@43.1214508,-79.3575716,17z/data=!3m1!4b1!4m5!3m4!1s0x89d34d14ac3fcad9:0xa6e33a2711035d6d!8m2!3d43.1214469!4d-79.3553829")}>
+                                    <Button variant="outlined" onClick={() => open("https://www.google.com/maps/place/Sue-Ann+Staff+Estate+Winery/@43.1214508,-79.3575716,17z/data=!3m1!4b1!4m5!3m4!1s0x89d34d14ac3fcad9:0xa6e33a2711035d6d!8m2!3d43.1214469!4d-79.3553829")}>
                                         Click for Directions
                                     </Button>
                                 </ListItem>

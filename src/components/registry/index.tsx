@@ -169,12 +169,12 @@ export const RegistryPage = (): JSX.Element => {
         <>
             <ThemeProvider theme={textTheme}>
                 <PasswordProtected card>
-                    {!session.invite.finished && <Alert severity="info" style={{ margin: "1em" }}><Link to="/rsvp" style={{ fontSize: "larger" }}>Please RSVP before claiming any registry items. (Click here for the RSVP page)</Link></Alert>}
+                    {!session.invite.finished && registries.length > 0 && <Alert severity="info" style={{ margin: "1em" }}><Link to="/rsvp" style={{ fontSize: "larger" }}>Please RSVP before claiming any registry items. (Click here for the RSVP page)</Link></Alert>}
                     {alertMessage && <Alert severity={alertType as AlertColor} style={{ margin: "1.5em" }}>{alertMessage}</Alert>}
                     <Typography variant="h4" gutterBottom>
                         Our Wish List
                     </Typography>
-                    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                    <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }} className="shadowed">
                         {registries.length > 0 ? registries.map((registry: Registry, index: number): JSX.Element => {
                             return <RegistryElement registry={registry} index={index} key={index} />
                         }) :

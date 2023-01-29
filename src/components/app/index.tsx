@@ -4,6 +4,7 @@ import { AuthProvider } from "../../util/auth";
 import { Emails } from "../emails";
 import { Faq } from "../faq";
 import { Home } from "../home";
+import { NotFound } from "../notfound";
 import { RegistryPage } from "../registry";
 import { Rsvp } from "../rsvp";
 import { Story } from "../story";
@@ -37,6 +38,8 @@ export const _App = (): JSX.Element => {
                     <Route path="/registry" element={<RegistryPage />} />
 
                     <Route path="/emails" element={<Emails />} />
+
+                    <Route path="*" element={<NotFound />} />
                 </Routes>
 
                 {/* <Footer /> */}

@@ -15,7 +15,7 @@ import HotelIcon from '@mui/icons-material/Hotel';
 
 export const Faq = (): JSX.Element => {
     React.useEffect(() => {
-        document.title = "Home | Melanie and Andrew's Wedding Website";
+        document.title = "Q & A | Melanie and Andrew's Wedding Website";
     }, []);
 
     const textSpec = {

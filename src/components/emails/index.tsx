@@ -148,7 +148,25 @@ export const Emails = (): JSX.Element => {
                                 setAll(!all);
                             }} />} label="Send to all emails? (or just incomplete RSVPs)" />
 
-                            <Button variant="contained" type="submit" style={{ width: "fit-content" }}>Send emails!</Button>
+                            <div className="form-row">
+                                <Button variant="contained" type="submit" style={{ width: "fit-content" }}>Send emails!</Button>
+                                <Button variant="outlined" style={{ width: "fit-content" }} onClick={(ev) => {
+                                    ev.preventDefault();
+                                    axios.post(Routes.RSVP.TEST_EMAIL, {
+                                        username: username,
+                                        password: password,
+                                        all_emails: all,
+                                        subject: subject,
+                                        email_content: content
+                                    }).then((res): void => {
+                                        alert(res.data.message, "success");
+                                        setConfirming(false);
+                                    }).catch((err) => {
+                                        alert(err.response.data.message, "error");
+                                        setConfirming(false);
+                                    });
+                                }}>Send test email</Button>
+                            </div>
 
                             <Typography variant="h6">Important replacement variables:</Typography>
                             <code>
