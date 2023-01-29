@@ -11,7 +11,8 @@ import ModeOfTravelIcon from '@mui/icons-material/ModeOfTravel';
 import CheckroomIcon from '@mui/icons-material/Checkroom';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import HotelIcon from '@mui/icons-material/Hotel';
-
+import CollectionsIcon from '@mui/icons-material/Collections';
+import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
 export const Faq = (): JSX.Element => {
     React.useEffect(() => {
@@ -104,6 +105,11 @@ export const Faq = (): JSX.Element => {
                                 </>
                                 }
                                 Icon={<HotelIcon fontSize="large" />}
+                            />
+                            <FaqItem
+                                question="Will phones and cameras be allowed at the ceremony for guests?"
+                                answer={<>We have hired professional photographers and videographers to capture our special moment, so we have decided on an unplugged ceremony.</>}
+                                Icon={<CameraAltIcon fontSize="large" />}
                             />
                         </List>
 
