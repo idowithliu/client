@@ -137,7 +137,6 @@ export const Emails = (): JSX.Element => {
                                 <label htmlFor="email-content" style={{ fontSize: "larger" }}>Enter email content here in HTML:</label>
                                 <CodeMirror
                                     id="email-content"
-                                    value="<p>Hello, World!</p>"
                                     height="400px"
                                     extensions={[html({})]}
                                     onChange={onChange}
@@ -162,6 +161,7 @@ export const Emails = (): JSX.Element => {
                                         alert(res.data.message, "success");
                                         setConfirming(false);
                                     }).catch((err) => {
+                                        alert("Something went wrong on our end! Please contact an administrator to get it fixed.", "error");
                                         alert(err.response.data.message, "error");
                                         setConfirming(false);
                                     });
@@ -202,6 +202,7 @@ export const Emails = (): JSX.Element => {
                             alert(res.data.message, "success");
                             setConfirming(false);
                         }).catch((err) => {
+                            alert("Something went wrong on our end! Please contact an administrator to get it fixed.", "error");
                             alert(err.response.data.message, "error");
                             setConfirming(false);
                         });

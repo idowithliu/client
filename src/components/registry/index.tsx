@@ -56,7 +56,7 @@ export const RegistryPage = (): JSX.Element => {
                     setClaimingItem(props.item);
                     setClaimerID(0);
                 }}>
-                    <ListItemText primary={<Typography variant="h6">{`${props.index}. ${props.item.name}`}</Typography>} />
+                    <ListItemText primary={<Typography variant="h6">{`${props.index}.`}{!props.item.claimer_id ? props.item.name : <s>{props.item.name}</s>}</Typography>} />
                     {claimer && <Typography variant="body1">Claimed by: {claimer.name}</Typography>}
                     <ListItemIcon>
                         {!props.item.claimer_id ? <CheckBoxOutlineBlankIcon /> : (!claimer ? <DoneIcon /> : <CheckBoxIcon />)}
@@ -108,6 +108,7 @@ export const RegistryPage = (): JSX.Element => {
             refreshRegistries();
             setClaiming(-1);
         }).catch((err) => {
+            setAlertMessage("Something went wrong on our end! Please contact an administrator to get it fixed.");
             setAlertType("error");
             setAlertMessage(err.response.data.message);
             refreshRegistries();
