@@ -9,8 +9,7 @@ export interface RegistryItem {
     url: string;
     id: number;
     price: number;
-    claimer: string;
-    claimer_id: number;
+    claimer: { pseudo_id: number };
 }
 
 export interface Registry {
@@ -29,7 +28,16 @@ export interface Invite {
     family_name: string;
     guests: Array<Guest>;
     uuid: string;
+    pseudo_id: number;
     focused: number;
     finished: boolean;
     email: string;
+}
+
+export interface Fund {
+    id: number;
+    name: string;
+    total_amount_raised: number;
+    goal: number;
+    background_photo: string;
 }

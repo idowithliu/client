@@ -6,6 +6,7 @@ import { ContentBox, PasswordProtected, textTheme } from "../../util/misc";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EventIcon from '@mui/icons-material/Event';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import MobileOffIcon from '@mui/icons-material/MobileOff';
 
 export const Home = (): JSX.Element => {
     React.useEffect(() => {
@@ -79,6 +80,15 @@ export const Home = (): JSX.Element => {
                                     </ListItemAvatar>
                                     <ListItemText primary={<Typography variant="h5">Time</Typography>} secondary={<Typography variant="body1">3:30 PM</Typography>} />
                                 </ListItem>
+                                <Divider variant="inset" component="li" />
+                                <ListItem>
+                                    <ListItemAvatar>
+                                        <Avatar>
+                                            <MobileOffIcon />
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText primary={<Typography variant="h5">Ceremony</Typography>} secondary={<Typography variant="body1">This is an unplugged ceremony. We invite our guests to be fully present. Kindly switch off all phones and cameras and enjoy the special moment with us. We have hired amazing photographers and videographers to capture our special day. We promise to share the photos after!</Typography>} />
+                                </ListItem>
                             </List>
                         </Box>
                     </PasswordProtected>
@@ -86,8 +96,12 @@ export const Home = (): JSX.Element => {
                     <div className="home-picture shadowed" style={{ width: "60%" }}>
                         <img alt="Venue animation" width="100%" src="/resources/img/animation.gif" className="css-1ago99h"></img>
                     </div>
+
+                    {/* <iframe src="https://free.timeanddate.com/countdown/i8pa6mjd/n250/cf105/cm0/cu4/ct0/cs0/ca0/cr0/ss0/cac000/cpc000/pcfffef6/tcf1d8e7/fs100/szw320/szh135/tac000/tptTime%20since%20Event%20started%20in/tpc000/matMelanie%20and%20Andrew's%20Wedding/mac000/mpc000/iso2023-09-09T15:30:00" allowTransparency={true} frameBorder="0" width="320" height="135"></iframe> */}
+                    {/* <iframe src="https://free.timeanddate.com/countdown/i8pa6uze/n250/cf105/cm0/cu4/ct0/cs0/ca0/cr0/ss0/cac000/cpc000/pcfff/tcf1d8e7/fs100/szw320/szh135/tac000/tptTime%20since%20Event%20started%20in/tpc000/matWedding%20Countdown!/mac000/mpc000/iso2023-02-01T00:00:00" allowTransparency={true} frameBorder="0" width="320" height="135"></iframe> */}
+                    {/* <iframe src="https://free.timeanddate.com/countdown/i8pa6uh8/n250/cf12/cm0/cu4/ct0/cs0/ca0/cr0/ss0/cac000/cpc000/pcfff/tcfff/fs100/szw320/szh135/tatTime%20left%20to%20Event%20in/tac000/tptTime%20since%20Event%20started%20in/tpc000/mac000/mpc000/iso2023-09-09T03:30:00" allowTransparency={true} frameBorder="0" width="180" height="69"></iframe> */}
                 </Grid>
             </ContentBox>
-        </ThemeProvider >
+        </ThemeProvider>
     );
 }

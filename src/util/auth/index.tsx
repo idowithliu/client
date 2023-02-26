@@ -39,7 +39,7 @@ export const AuthProvider = (props: { children: React.ReactNode }): JSX.Element 
             userID = localStorage.getItem("userID")!;
         }
         if (!!userID!) {
-            axios.get(`${Routes.RSVP.INVITE}/${userID}`).then((res) => {
+            axios.get(`${Routes.RSVP.INVITE}/${userID}/`).then((res) => {
                 setInvite(res.data);
                 setStatus(AuthStatus.LOGGED_IN);
                 setId(userID);

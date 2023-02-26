@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter, Link } from "react-router-dom";
 import { AuthProvider } from "../../util/auth";
 import { Emails } from "../emails";
 import { Faq } from "../faq";
@@ -21,9 +21,11 @@ export const _App = (): JSX.Element => {
                 </picture>
 
                 <div className="box-center">
-                    <div className="headline-row">
-                        <div className="headline">Melanie</div> <div className="headline-amp headline">&</div> <div className="headline">Andrew</div>
-                    </div>
+                    <Link to="/">
+                        <div className="headline-row">
+                            <div className="headline">Melanie</div> <div className="headline-amp headline">&</div> <div className="headline">Andrew</div>
+                        </div>
+                    </Link>
                     <div className="date">are getting married on the ninth of September 2023</div>
                 </div>
 
@@ -44,6 +46,7 @@ export const _App = (): JSX.Element => {
 
                 {/* <Footer /> */}
                 <div style={{ height: "4em" }} />
+                {/* <iframe src="https://free.timeanddate.com/countdown/i8pa6mjd/n250/cf105/cm0/cu4/ct0/cs0/ca0/cr0/ss0/cac000/cpc000/pcfffef6/tcf1d8e7/fs100/szw320/szh135/tac000/tptTime%20since%20Event%20started%20in/tpc000/matMelanie%20and%20Andrew's%20Wedding/mac000/mpc000/iso2023-09-09T15:30:00" allowTransparency={true} frameBorder="0" width="320" height="135"></iframe> */}
             </div>
         </>
     );

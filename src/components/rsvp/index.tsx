@@ -35,6 +35,10 @@ export const Rsvp = (): JSX.Element => {
         document.title = "RSVP | Melanie and Andrew's Wedding Website";
     }, []);
 
+    const updateGuest = (idx: number, new_guest: Guest): void => {
+        session.invite.guests[idx] = new_guest;
+    }
+
     const GuestInfo = (props: { guest: Guest, index: number }): JSX.Element => {
         const guest = props.guest;
         return (
@@ -61,11 +65,11 @@ export const Rsvp = (): JSX.Element => {
                                 label="Dietary Restrictions (optional)"
                                 defaultValue={guest.dietary_restrictions}
                                 fullWidth={true}
-                                autoFocus={guest.id === session.invite.focused}
+                                // autoFocus={guest.id === session.invite.focused}
                                 onChange={(ev) => {
                                     const new_guest: Guest = { ...guest, dietary_restrictions: ev.target.value };
-                                    session.setGuest(props.index, new_guest);
-                                    session.setFocused(guest.id);
+                                    updateGuest(props.index, new_guest);
+                                    // session.setFocused(guest.id);
                                 }}
                             />
                         }
@@ -105,27 +109,32 @@ export const Rsvp = (): JSX.Element => {
                                 );
                             })
                         }
-                        <Button variant="contained" onClick={(ev) => {
-                            ev.preventDefault();
 
-                            for (let i = 0; i < session.invite.guests.length; i++) {
-                                const guest: Guest = session.invite.guests[i];
-                                if (guest.is_attending === null) {
-                                    // session.setGuest(i, { ...guest, is_attending: false });
-                                    alert(`Please choose an option for guest ${guest.name}`, "error");
-                                    return;
+                        <div className="form-row">
+                            <Button variant="contained" onClick={(ev) => {
+                                ev.preventDefault();
+                                alert("", "info");
+
+                                for (let i = 0; i < session.invite.guests.length; i++) {
+                                    const guest: Guest = session.invite.guests[i];
+                                    if (guest.is_attending === null) {
+                                        // updateGuest(i, { ...guest, is_attending: false });
+                                        alert(`Please choose an option for guest ${guest.name}`, "error");
+                                        return;
+                                    }
                                 }
-                            }
 
-                            axios.post(Routes.RSVP.SUBMIT, session.invite).then((res) => {
-                                alert(res.data.message, "success");
-                                session.refresh();
-                            }).catch((err) => {
-                                setAlertType("error");
-                                setAlertMessage(err.response.data.message);
-                            });
-                        }}>Submit RSVP!</Button>
-                        {alertMessage && <Alert severity={alertType as AlertColor} style={{ margin: "1.5em" }}>{alertMessage}</Alert>}
+                                axios.post(Routes.RSVP.SUBMIT, session.invite).then((res) => {
+                                    alert(res.data.message, "success");
+                                    session.refresh();
+                                }).catch((err) => {
+                                    setAlertMessage("Something went wrong on our end! Please contact an administrator to get it fixed.");
+                                    setAlertType("error");
+                                    setAlertMessage(err.response.data.message);
+                                });
+                            }}>Submit RSVP!</Button>
+                            {alertMessage && <Alert severity={alertType as AlertColor} >{alertMessage}</Alert>}
+                        </div>
                     </>
                 );
         }

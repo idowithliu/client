@@ -13,6 +13,8 @@ import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 import HotelIcon from '@mui/icons-material/Hotel';
 import CollectionsIcon from '@mui/icons-material/Collections';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import EventBusyIcon from '@mui/icons-material/EventBusy';
+import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 
 export const Faq = (): JSX.Element => {
     React.useEffect(() => {
@@ -106,10 +108,17 @@ export const Faq = (): JSX.Element => {
                                 }
                                 Icon={<HotelIcon fontSize="large" />}
                             />
+                            <Divider variant="inset" component="li" />
                             <FaqItem
-                                question="Will phones and cameras be allowed at the ceremony for guests?"
-                                answer={<>We have hired professional photographers and videographers to capture our special moment, so we have decided on an unplugged ceremony.</>}
-                                Icon={<CameraAltIcon fontSize="large" />}
+                                question="What do I do if I can't make it?"
+                                answer={<>Please RSVP as soon as possible to let us know that you won't be able to join us for our special day.</>}
+                                Icon={<EventBusyIcon fontSize="large" />}
+                            />
+                            <Divider variant="inset" component="li" />
+                            <FaqItem
+                                question="Can I take photos during the ceremony?"
+                                answer={<>We are having an unplugged ceremony (no phones or cameras). We would love for you to be fully present as we say our "I do's". We have hired professionals to capture our special moment for us, so please allow them the space to do their best work. After the ceremony, feel free to take as many photos and videos as you'd like.</>}
+                                Icon={<PhotoCameraIcon fontSize="large" />}
                             />
                         </List>
 

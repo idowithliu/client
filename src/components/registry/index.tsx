@@ -18,12 +18,13 @@ import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import DoneIcon from '@mui/icons-material/Done';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
-import { Guest, Registry, RegistryItem } from "../../util/models";
+import { Guest, Invite, Registry, RegistryItem } from "../../util/models";
 import { ContentBox, PasswordProtected, textTheme } from "../../util/misc";
 
 import { Link } from "react-router-dom";
 import { Auth, AuthContext } from "../../util/auth";
 import { Routes } from "../../util/routes";
+import { Funds } from "./funds";
 
 export const RegistryPage = (): JSX.Element => {
 
@@ -40,26 +41,19 @@ export const RegistryPage = (): JSX.Element => {
     };
 
     const RegistryItemElement = (props: { item: RegistryItem, index: number }): JSX.Element => {
-        let claimer: Guest | null = null;
-        if (session.invite.guests) {
-            for (let guest of session.invite.guests) {
-                if (guest.id === props.item.claimer_id) {
-                    claimer = guest; break;
-                }
-            }
-        }
+        const claimer: Invite | null = (!!props.item.claimer && props.item && props.item.claimer.pseudo_id === session.invite.pseudo_id) ? session.invite : null;
         return (
             <ListItem disablePadding>
                 <ListItemButton onClick={(): void => {
-                    if (!!props.item.claimer_id || !session.invite.finished) return;
+                    if (!!props.item.claimer || !session.invite.finished) return;
                     setClaiming(props.item.id);
                     setClaimingItem(props.item);
                     setClaimerID(0);
                 }}>
-                    <ListItemText primary={<Typography variant="h6">{`${props.index}.`}{!props.item.claimer_id ? props.item.name : <s>{props.item.name}</s>}</Typography>} />
-                    {claimer && <Typography variant="body1">Claimed by: {claimer.name}</Typography>}
+                    <ListItemText primary={<Typography variant="h6">{`${props.index}.`}{!props.item.claimer ? props.item.name : <s>{props.item.name}</s>}</Typography>} />
+                    {claimer && <Typography variant="body1">Claimed by: {claimer.family_name}</Typography>}
                     <ListItemIcon>
-                        {!props.item.claimer_id ? <CheckBoxOutlineBlankIcon /> : (!claimer ? <DoneIcon /> : <CheckBoxIcon />)}
+                        {!props.item.claimer ? <CheckBoxOutlineBlankIcon /> : (!claimer ? <DoneIcon /> : <CheckBoxIcon />)}
                     </ListItemIcon>
                 </ListItemButton>
             </ListItem>
@@ -93,27 +87,30 @@ export const RegistryPage = (): JSX.Element => {
     };
 
     const submitClaimForm = (): void => {
-        if (claimerID === 0) {
-            setAlertType("error");
-            setAlertMessage("Please select a claimer name from the dropdown");
-            return;
-        }
+        setAlertMessage("");
+        // if (claimerID === 0) {
+        //     setAlertType("error");
+        //     setAlertMessage("Please select a claimer name from the dropdown");
+        //     return;
+        // }
         axios.post(Routes.REGISTRY.CLAIM, {
             "id": claimingItem.id,
-            "claimer_id": claimerID,
             "uuid": session.invite.uuid,
         }).then((res) => {
-            setAlertType("success");
-            setAlertMessage(res.data.message);
+            alert(res.data.message, "success");
             refreshRegistries();
             setClaiming(-1);
         }).catch((err) => {
             setAlertMessage("Something went wrong on our end! Please contact an administrator to get it fixed.");
-            setAlertType("error");
-            setAlertMessage(err.response.data.message);
+            alert(err.response.data.message, "error");
             refreshRegistries();
             setClaiming(-1);
         });
+    }
+
+    const alert = (message: string, type: AlertColor): void => {
+        setAlertType(type);
+        setAlertMessage(message);
     }
 
     const [registries, setRegistries] = React.useState([] as Array<Registry>);
@@ -128,7 +125,8 @@ export const RegistryPage = (): JSX.Element => {
         axios.get(Routes.REGISTRY.ITEMS, {}).then((res) => {
             setRegistries(res.data as Array<Registry>);
         }).catch((err) => {
-            console.error("Error occurred while fetching registry:", err);
+            setAlertType("error");
+            setAlertMessage("Something went wrong on our end! Please contact an administrator to get it fixed.");
         });
     }
 
@@ -168,10 +166,11 @@ export const RegistryPage = (): JSX.Element => {
 
     return (
         <>
-            <ThemeProvider theme={textTheme}>
-                <PasswordProtected card>
-                    {!session.invite.finished && registries.length > 0 && <Alert severity="info" style={{ margin: "1em" }}><Link to="/rsvp" style={{ fontSize: "larger" }}>Please RSVP before claiming any registry items. (Click here for the RSVP page)</Link></Alert>}
-                    {alertMessage && <Alert severity={alertType as AlertColor} style={{ margin: "1.5em" }}>{alertMessage}</Alert>}
+
+            <PasswordProtected card>
+                {!session.invite.finished && registries.length > 0 && <Alert severity="info" style={{ margin: "1em" }}><Link to="/rsvp" style={{ fontSize: "larger" }}>Please RSVP before claiming any registry items. (Click here for the RSVP page)</Link></Alert>}
+                {alertMessage && <Alert severity={alertType as AlertColor} style={{ margin: "1.5em" }}>{alertMessage}</Alert>}
+                <ThemeProvider theme={textTheme}>
                     <Typography variant="h4" gutterBottom>
                         Our Wish List
                     </Typography>
@@ -190,8 +189,11 @@ export const RegistryPage = (): JSX.Element => {
                                 </List>
                             </nav>}
                     </Box>
-                </PasswordProtected>
-            </ThemeProvider>
+                </ThemeProvider>
+                <div style={{ height: "2.5em" }} />
+                <Funds setAlertType={setAlertType} setAlertMessage={setAlertMessage} />
+            </PasswordProtected>
+
             <Modal
                 open={claiming >= 0}
                 onClose={handleClose}
@@ -203,17 +205,20 @@ export const RegistryPage = (): JSX.Element => {
                         Claim {claimingItem.name}?
                     </Typography>
                     <br />
-                    <Typography variant="subtitle1">Link to Purchasing Site: <a target="_blank" href={claimingItem.url}>{claimingItem.url}</a></Typography>
-                    <Divider /><hr /><br />
-                    <Typography variant="body1">
-                        <label htmlFor="claimer-name">To claim this registry item, please select your name below:</label>
+                    <Button variant="outlined" onClick={() => open(claimingItem.url)}>
+                        Visit Purchasing Site
+                    </Button>
+
+                    <Typography variant="body1" marginTop="1em">
+                        {/* <label htmlFor="claimer-name">To claim this registry item, please select your name below:</label> */}
+                        <label htmlFor="claimer-name">Are you sure you would like to claim this registry item?:</label>
                     </Typography>
                     <hr />
                     <form onSubmit={(ev) => {
                         ev.preventDefault();
                         submitClaimForm();
                     }}>
-                        <FormControl required fullWidth>
+                        {/* <FormControl required fullWidth>
                             <InputLabel id="claimer-name-label">Claimer Name</InputLabel>
                             <Select
                                 id="claimer-name"
@@ -228,7 +233,7 @@ export const RegistryPage = (): JSX.Element => {
                                     getGuests()
                                 }
                             </Select>
-                        </FormControl>
+                        </FormControl> */}
                         <div className="form-row" style={{ marginTop: "1em" }}>
                             <Button variant="contained" type="submit" disableElevation>Claim!</Button>
                             <Button variant="outlined" onClick={(ev) => {
