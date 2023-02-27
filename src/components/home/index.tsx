@@ -7,6 +7,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EventIcon from '@mui/icons-material/Event';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import MobileOffIcon from '@mui/icons-material/MobileOff';
+import EmailIcon from '@mui/icons-material/Email';
 
 export const Home = (): JSX.Element => {
     React.useEffect(() => {
@@ -80,6 +81,16 @@ export const Home = (): JSX.Element => {
                                     </ListItemAvatar>
                                     <ListItemText primary={<Typography variant="h5">Time</Typography>} secondary={<Typography variant="body1">3:30 PM</Typography>} />
                                 </ListItem>
+                                <Divider variant="inset" component="li" />
+                                <ListItem>
+                                    <ListItemAvatar>
+                                        <Avatar>
+                                            <EmailIcon />
+                                        </Avatar>
+                                    </ListItemAvatar>
+                                    <ListItemText primary={<Typography variant="h5">RSVP Deadline</Typography>} secondary={<Typography variant="h6">June 1, 2023</Typography>} />
+                                </ListItem>
+
                                 <Divider variant="inset" component="li" />
                                 <ListItem>
                                     <ListItemAvatar>

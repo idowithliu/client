@@ -6,7 +6,9 @@ export const Routes = {
     REGISTRY: {
         CLAIM: `${BASEURL}/api/registry/claim/`,
         ITEMS: `${BASEURL}/api/registry/items/`,
-        FUNDS: `${BASEURL}/api/registry/funds/`
+        FUNDS: `${BASEURL}/api/registry/funds/`,
+        CONTRIBUTE: `${BASEURL}/api/registry/contribute/`,
+        GET_AMOUNT: `${BASEURL}/api/registry/contribution-amount/`
     },
     RSVP: {
         SUBMIT: `${BASEURL}/api/invites/rsvp/`,

@@ -7,6 +7,7 @@ export interface NavRoute {
 export interface RegistryItem {
     name: string;
     url: string;
+    photo_url: string;
     id: number;
     price: number;
     claimer: { pseudo_id: number };

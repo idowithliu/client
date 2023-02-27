@@ -72,12 +72,12 @@ export const Story = (): JSX.Element => {
                         <Grid item {...textSpec}>
                             <div className="centred">
                                 <Typography variant="h6" style={{ textAlign: "justify" }}>
-                                    Once they became official, their relationship was immediately tested, because Melanie was accepted to pharmacy school
+                                    After becoming official, their relationship was immediately tested, because Melanie was accepted to pharmacy school
                                     at the University of Toronto, while Andrew was finishing his degree at Western University.
-                                    With endless phone calls and long drives for Andrew, they survived the year long-distance,
-                                    and the saying that “distance makes the heart grow fonder” held true. After much deliberation,
-                                    Andrew ended the distance and joined Melanie in the career path of selling drugs legally by furthering his studies
-                                    at the University of Toronto.
+                                    Between phone calls and long drives, they survived the year-long distance,
+                                    and the saying that “distance makes the heart grow fonder” held true.
+
+                                    On their six-year anniversary, Andrew decided to put a ring on it. He bought her favourite cake from Butter Baker, a dozen red roses, and a ring, and proposed on a hike by the Niagara Falls. The rest of the story is still unwritten.
                                 </Typography>
                             </div>
                         </Grid>

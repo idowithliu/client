@@ -15,6 +15,7 @@ import CollectionsIcon from '@mui/icons-material/Collections';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import EventBusyIcon from '@mui/icons-material/EventBusy';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
+import UnsubscribeIcon from '@mui/icons-material/Unsubscribe';
 
 export const Faq = (): JSX.Element => {
     React.useEffect(() => {
@@ -93,7 +94,7 @@ export const Faq = (): JSX.Element => {
                             <Divider variant="inset" component="li" />
                             <FaqItem
                                 question="Can I bring a guest/date?"
-                                answer={<>If you've received a +1, your guest's name will be listed on your invitation and will appear under your name when you <Link to="/rsvp"><u>RSVP</u></Link>. Otherwise, we would love to keep the wedding as an intimate event with close friends and family.</>}
+                                answer={<>If you've received a plus one, your guest's name will be listed on your invitation and will appear under your name when you <Link to="/rsvp"><u>RSVP</u></Link>. Otherwise, we would love to keep the wedding as an intimate event with close friends and family.</>}
                                 Icon={<PersonAddAlt1Icon fontSize="large" />}
                             />
                             <Divider variant="inset" component="li" />
@@ -102,8 +103,7 @@ export const Faq = (): JSX.Element => {
                                 answer={<><>A block of rooms has been reserved for our guests at the <a target="_blank" style={{ fontWeight: "bold" }} href="https://www.google.com/maps/place/Inn+On+The+Twenty/@43.149579,-79.3719061,17z/data=!3m1!4b1!4m8!3m7!1s0x89d348fcd0310b85:0x128b1847a422a017!5m2!4m1!1i2!8m2!3d43.1495719!4d-79.3697271">
                                     Inn on the Twenty, 3845 Main Street, Jordan, Ontario
                                 </a>. To book over the phone at <strong>1-888-669-5566</strong>, please ask for the room block under our names.</>
-                                    <><br /><br />To book online, visit <a target="_blank" href="https://www.vintage-hotels.com/reservations.htm" style={{ fontWeight: "bold" }}>this link</a> and enter <strong>3610057</strong> as the group ID.</>
-                                    <>These rooms will be held until July 11, 2023.</> <br /><br />Click <a style={{ fontWeight: "bold" }} target="_blank" href="/resources/img/accomodations-flyer.pdf">here</a> for a flyer with more hotel options in the vicinity.
+                                    <><br /><br />To book online, visit <a target="_blank" href="https://www.vintage-hotels.com/reservations.htm" style={{ fontWeight: "bold" }}>this link</a> and enter <strong>3610057</strong> as the group ID. These rooms will be held until July 11, 2023.</> <br /><br />Click <a style={{ fontWeight: "bold" }} target="_blank" href="/resources/img/accomodations-flyer.pdf">here</a> for a flyer with more hotel options in the vicinity.
                                 </>
                                 }
                                 Icon={<HotelIcon fontSize="large" />}
@@ -111,14 +111,20 @@ export const Faq = (): JSX.Element => {
                             <Divider variant="inset" component="li" />
                             <FaqItem
                                 question="What do I do if I can't make it?"
-                                answer={<>Please RSVP as soon as possible to let us know that you won't be able to join us for our special day.</>}
+                                answer={<>We're sad to hear you won't be able to join us for our special day. Please <Link to="/rsvp">RSVP</Link> as soon as possible so we can let our caterers know.</>}
                                 Icon={<EventBusyIcon fontSize="large" />}
                             />
                             <Divider variant="inset" component="li" />
                             <FaqItem
                                 question="Can I take photos during the ceremony?"
-                                answer={<>We are having an unplugged ceremony (no phones or cameras). We would love for you to be fully present as we say our "I do's". We have hired professionals to capture our special moment for us, so please allow them the space to do their best work. After the ceremony, feel free to take as many photos and videos as you'd like.</>}
+                                answer={<>We are having an unplugged ceremony (no phones or cameras). We would love for you to be fully present as we say our "I Dos". We have hired professionals to capture our special moment for us, so please allow them the space to do their best work. After the ceremony, feel free to take as many photos and videos as you'd like.</>}
                                 Icon={<PhotoCameraIcon fontSize="large" />}
+                            />
+                            <Divider variant="inset" component="li" />
+                            <FaqItem
+                                question="What if I miss my RSVP deadline?"
+                                answer={<>Unfortunately, we will have sent the final numbers to our caterers already, and we will not have reserved a spot for you. We hope to celebrate with you another time!</>}
+                                Icon={<UnsubscribeIcon fontSize="large" />}
                             />
                         </List>
 

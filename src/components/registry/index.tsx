@@ -8,7 +8,7 @@ import '@fontsource/roboto/700.css';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Alert, AlertColor, Button, Divider, FormControl, Grid, IconButton, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Modal, Select, Snackbar, Stack, TextField, ThemeProvider } from "@mui/material";
+import { Alert, AlertColor, Button, CardMedia, Divider, FormControl, Grid, IconButton, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Modal, Select, Snackbar, Stack, TextField, ThemeProvider } from "@mui/material";
 import InboxIcon from '@mui/icons-material/Inbox';
 import DraftsIcon from '@mui/icons-material/Drafts';
 import GradingIcon from '@mui/icons-material/Grading';
@@ -204,7 +204,11 @@ export const RegistryPage = (): JSX.Element => {
                     <Typography id="modal-modal-title" variant="h5" component="h2">
                         Claim {claimingItem.name}?
                     </Typography>
-                    <br />
+                    <CardMedia
+                        sx={{ height: 140, marginTop: "1em", marginBottom: "1em" }}
+                        image={claimingItem.photo_url}
+                        title=""
+                    />
                     <Button variant="outlined" onClick={() => open(claimingItem.url)}>
                         Visit Purchasing Site
                     </Button>

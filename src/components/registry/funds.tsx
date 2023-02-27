@@ -17,6 +17,7 @@ export const Funds = (props: { setAlertType: (type: AlertColor) => void, setAler
     const [claiming, setClaiming] = React.useState(-1);
     const [claimingItem, setClaimingItem] = React.useState({} as Fund);
     const [claimerID, setClaimerID] = React.useState(0);
+    const [amount, setAmount] = React.useState(0);
 
     const session: Auth = React.useContext(AuthContext);
 
@@ -39,18 +40,30 @@ export const Funds = (props: { setAlertType: (type: AlertColor) => void, setAler
 
     const FundElement = (props: { fund: Fund, index: number }): JSX.Element => {
         const fund = props.fund;
+        const [status, setStatus] = React.useState(-1);
+
+        React.useEffect((): void => {
+            axios.post(Routes.REGISTRY.GET_AMOUNT, {
+                uuid: session.invite.uuid,
+                id: fund.id
+            }).then((res) => {
+                setStatus(res.data.amount);
+            }).catch((err) => {
+            });
+        }, []);
+
         return (
             <>
                 <Card sx={{ width: "100%", paddingBottom: "2em", border: "none" }}>
                     <CardActionArea onClick={() => {
-                        if (!session.invite.finished) return;
+                        if (!session.invite.finished || status !== 0) return;
                         setClaiming(fund.id);
                         setClaimingItem(fund);
                     }}>
                         <CardMedia
                             sx={{ height: 140 }}
                             image={fund.background_photo}
-                            title="Click to Contribute!"
+                            title={status === 0 ? "Click to Gift!" : ""}
                         />
                         <CardContent>
                             <Typography gutterBottom variant="h5" component="div">
@@ -61,7 +74,7 @@ export const Funds = (props: { setAlertType: (type: AlertColor) => void, setAler
                                     Amount raised: ${fund.total_amount_raised}<br />Goal: ${fund.goal}
                                 </Typography>
                                 <Box sx={{ position: 'relative', display: 'inline-flex' }}>
-                                    <CircularProgress variant="determinate" value={fund.total_amount_raised / fund.goal * 100}></CircularProgress>
+                                    <CircularProgress variant="determinate" value={Math.min(1, fund.total_amount_raised / fund.goal) * 100}></CircularProgress>
                                     <Box
                                         sx={{
                                             top: 0,
@@ -82,7 +95,15 @@ export const Funds = (props: { setAlertType: (type: AlertColor) => void, setAler
                                 </Box>
                             </div>
                             <Typography variant="h6" color="text.secondary">
-                                Click to Contribute!
+                                {
+                                    status === 0 ?
+                                        <>Click to Gift!</>
+                                        :
+                                        status === -1 ?
+                                            <>Please RSVP to gift!</>
+                                            :
+                                            <>You gifted ${status}!</>
+                                }
                             </Typography>
                         </CardContent>
                     </CardActionArea>
@@ -112,7 +133,22 @@ export const Funds = (props: { setAlertType: (type: AlertColor) => void, setAler
     };
 
     const submitClaimForm = (): void => {
-
+        axios.post(Routes.REGISTRY.CONTRIBUTE, {
+            "id": claimingItem.id,
+            "uuid": session.invite.uuid,
+            "amount": amount
+        }).then((res) => {
+            alert(res.data.message, "success");
+            refreshFunds();
+            setClaiming(-1);
+            setAmount(0);
+        }).catch((err) => {
+            props.setAlertMessage("Something went wrong on our end! Please contact an administrator to get it fixed.");
+            alert(err.response.data.message, "error");
+            refreshFunds();
+            setClaiming(-1);
+            setAmount(0);
+        });
     }
 
     return (
@@ -145,11 +181,11 @@ export const Funds = (props: { setAlertType: (type: AlertColor) => void, setAler
             >
                 <Box sx={modalStyle}>
                     <Typography id="modal-modal-title" variant="h5" component="h2">
-                        Contribute to {claimingItem.name}?
+                        Gift to {claimingItem.name} Fund?
                     </Typography>
                     <br />
                     <Typography variant="body1">
-                        <label htmlFor="claimer-name">Please e-transfer your contribution to either <strong>andrewlpl@hotmail.com</strong> (Andrew's email) or <strong>mel23mel@hotmail.com</strong> (Melanie's email) then <strong>enter the amount you contributed below</strong>:</label>
+                        <label htmlFor="claimer-name">Please e-transfer your gift to either <strong>andrewlpl@hotmail.com</strong> (Andrew's email) or <strong>mel23mel@hotmail.com</strong> (Melanie's email) then <strong>enter the amount you gifted below</strong>:</label>
                     </Typography>
                     <hr />
                     <form onSubmit={(ev) => {
@@ -160,15 +196,18 @@ export const Funds = (props: { setAlertType: (type: AlertColor) => void, setAler
                             <InputLabel id="amount-label"></InputLabel>
                             <TextField
                                 id="outlined-number"
-                                label="Donation Amount"
+                                label="Gift Amount ($)"
                                 type="number"
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
+                                onChange={(ev) => {
+                                    setAmount(parseInt(ev.target.value));
+                                }}
                             />
                         </FormControl>
                         <div className="form-row" style={{ marginTop: "1em" }}>
-                            <Button variant="contained" type="submit" disableElevation>Claim!</Button>
+                            <Button variant="contained" type="submit" disableElevation>Gift!</Button>
                             <Button variant="outlined" onClick={(ev) => {
                                 ev.preventDefault();
                                 setClaiming(-1);
@@ -176,7 +215,7 @@ export const Funds = (props: { setAlertType: (type: AlertColor) => void, setAler
                         </div>
                     </form>
                     <Typography variant="body1" marginTop="0.5em">
-                        Thanks for your generous donation!
+                        Thanks for your generous gift!
                     </Typography>
                 </Box>
             </Modal>
