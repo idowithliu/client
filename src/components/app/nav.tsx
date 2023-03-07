@@ -5,10 +5,11 @@ import { NavRoute } from "../../util/models";
 export const NavBar = (): JSX.Element => {
     const routes: Array<NavRoute> = [
         { id: 1, url: "/", text: "Home" },
-        { id: 3, url: "/about", text: "Our Story" },
+        { id: 2, url: "/about", text: "Our Story" },
+        { id: 3, url: "/schedule", text: "Schedule" },
         { id: 4, url: "/faq", text: "FAQs" },
-        { id: 2, url: "/rsvp", text: "RSVP" },
-        { id: 5, url: "/registry", text: "Registry" },
+        { id: 5, url: "/rsvp", text: "RSVP" },
+        { id: 6, url: "/registry", text: "Registry" },
     ];
 
     const NavItem = (props: { href: string, children: string }): JSX.Element => {

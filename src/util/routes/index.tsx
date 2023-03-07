@@ -14,6 +14,7 @@ export const Routes = {
         SUBMIT: `${BASEURL}/api/invites/rsvp/`,
         INVITE: `${BASEURL}/api/invites/invites`,
         EMAILS: `${BASEURL}/api/invites/send-emails/`,
-        TEST_EMAIL: `${BASEURL}/api/invites/test-email/`
+        TEST_EMAIL: `${BASEURL}/api/invites/test-email/`,
+        DRY_RUN: `${BASEURL}/api/invites/dry-run/`
     }
 }

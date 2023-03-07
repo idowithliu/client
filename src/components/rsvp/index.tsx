@@ -9,7 +9,7 @@ import '@fontsource/roboto/700.css';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import { ContentBox, useQuery, textTheme } from "../../util/misc";
+import { ContentBox, useQuery, textTheme, anchorOrigin } from "../../util/misc";
 
 import { Guest, Invite } from "../../util/models";
 import { Auth, AuthContext, AuthStatus } from "../../util/auth";
@@ -96,9 +96,7 @@ export const Rsvp = (): JSX.Element => {
                 return (
                     <>
                         <Typography variant="h6" gutterBottom>
-                            Currently performing RSVP for the <strong>{session.invite.family_name}</strong> family.
-                            <br />
-                            <small>To switch to a different invite, please use the unique link provided to you in your wedding invitation.</small>
+                            Currently performing RSVP for <strong>{session.invite.family_name}</strong>.
                         </Typography>
                         <Divider />
                         <div style={{ marginTop: "1em" }} />
@@ -170,6 +168,7 @@ export const Rsvp = (): JSX.Element => {
                     </Typography>
                     <RsvpPage />
                 </ContentBox>
+                <div style={{ height: "4em" }} />
             </ThemeProvider>
             <Snackbar
                 open={!!alertMessage}
@@ -177,6 +176,7 @@ export const Rsvp = (): JSX.Element => {
                 onClose={handleClose}
                 message={alertMessage}
                 action={action}
+                anchorOrigin={anchorOrigin}
             >
                 <Alert onClose={handleClose} severity={alertType} sx={{ width: '100%' }}>
                     {alertMessage}

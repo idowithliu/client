@@ -8,8 +8,8 @@ import '@fontsource/roboto/700.css';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { Alert, AlertColor, Button, Checkbox, Divider, FormControl, FormControlLabel, Grid, Icon, IconButton, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Modal, Select, Snackbar, Stack, TextField, ThemeProvider } from "@mui/material";
-import { ContentBox, PasswordProtected, textTheme } from "../../util/misc";
+import { Alert, AlertColor, Button, Checkbox, Divider, FormControl, FormControlLabel, Grid, Icon, IconButton, InputLabel, List, ListItem, ListItemButton, ListItemIcon, ListItemText, MenuItem, Modal, Paper, Select, Snackbar, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, ThemeProvider } from "@mui/material";
+import { anchorOrigin, ContentBox, PasswordProtected, textTheme } from "../../util/misc";
 
 import { Link } from "react-router-dom";
 import { Auth, AuthContext } from "../../util/auth";
@@ -17,7 +17,8 @@ import { Routes } from "../../util/routes";
 
 import CodeMirror from '@uiw/react-codemirror';
 import { html } from '@codemirror/lang-html';
-import { Invite } from "../../util/models";
+import { Invite, Recipient } from "../../util/models";
+import { Footer } from "../app/footer";
 
 export const Emails = (): JSX.Element => {
     const [alertMessage, setAlertMessage] = React.useState("");
@@ -31,6 +32,9 @@ export const Emails = (): JSX.Element => {
 
     const [inviteList, setInviteList] = React.useState([] as Array<Invite>);
     const [confirming, setConfirming] = React.useState(false);
+
+    const [recipients, setRecipients] = React.useState([] as Array<Recipient>);
+    const [dryRunMessage, setDryRunMessage] = React.useState("");
 
     React.useEffect((): void => {
         document.title = "Emails | Melanie and Andrew's Wedding Website";
@@ -151,6 +155,21 @@ export const Emails = (): JSX.Element => {
                                 <Button variant="contained" type="submit" style={{ width: "fit-content" }}>Send emails!</Button>
                                 <Button variant="outlined" style={{ width: "fit-content" }} onClick={(ev) => {
                                     ev.preventDefault();
+                                    axios.post(Routes.RSVP.DRY_RUN, {
+                                        username: username,
+                                        password: password,
+                                        all_emails: all
+                                    }).then((res): void => {
+                                        setRecipients(res.data.emails);
+                                        setDryRunMessage(res.data.message);
+                                        alert(res.data.message, "success");
+                                    }).catch((err) => {
+                                        alert("Something went wrong on our end! Please contact an administrator to get it fixed.", "error");
+                                        alert(err.response.data.message, "error");
+                                    });
+                                }}>Fetch Recipient Emails</Button>
+                                <Button variant="outlined" style={{ width: "fit-content" }} onClick={(ev) => {
+                                    ev.preventDefault();
                                     axios.post(Routes.RSVP.TEST_EMAIL, {
                                         username: username,
                                         password: password,
@@ -168,15 +187,44 @@ export const Emails = (): JSX.Element => {
                                 }}>Send test email</Button>
                             </div>
 
-                            <Typography variant="h6">Important replacement variables:</Typography>
-                            <code>
-                                family_name: string<br />
-                                invite_url: url(string)<br />
-                                email: string<br />
-                            </code>
+                            {dryRunMessage && <div>
+                                <Typography variant="h6">Recipients {dryRunMessage && <>({dryRunMessage})</>}:</Typography>
+                                <TableContainer component={Paper}>
+                                    <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                                        <TableHead>
+                                            <TableRow>
+                                                <TableCell sx={{ fontSize: "larger" }}><strong>Family Name</strong></TableCell>
+                                                <TableCell sx={{ fontSize: "larger" }} align="left"><strong>Email Address</strong></TableCell>
+                                            </TableRow>
+                                        </TableHead>
+                                        <TableBody>
+                                            {recipients.map((recipient: Recipient, idx: number) => (
+                                                <TableRow
+                                                    key={idx}
+                                                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                                                >
+                                                    <TableCell component="th" scope="row" sx={{ fontSize: "larger" }}>
+                                                        {recipient.family_name}
+                                                    </TableCell>
+                                                    <TableCell align="left" sx={{ fontSize: "larger" }}>{recipient.address}</TableCell>
+                                                </TableRow>
+                                            ))}
+                                        </TableBody>
+                                    </Table>
+                                </TableContainer>
+                            </div>}
+                            <Divider />
+                            <div>
+                                <Typography variant="h6">Important replacement variables:</Typography>
+                                <code>
+                                    family_name: string<br />
+                                    invite_url: url(string)<br />
+                                </code>
+                            </div>
                         </Grid>
                     </form>
                 </ContentBox>
+                <Footer />
             </ThemeProvider>
 
             <Modal
@@ -225,6 +273,7 @@ export const Emails = (): JSX.Element => {
                 onClose={handleClose}
                 message={alertMessage}
                 action={action}
+                anchorOrigin={anchorOrigin}
             >
                 <Alert onClose={handleClose} severity={alertType} sx={{ width: '100%' }}>
                     {alertMessage}

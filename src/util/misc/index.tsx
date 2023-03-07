@@ -1,7 +1,9 @@
-import { Box, createTheme, TextField, Theme } from "@mui/material";
+import { Box, createTheme, SnackbarOrigin, TextField, Theme } from "@mui/material";
 import * as React from "react";
 import { useLocation } from "react-router-dom";
 import { Auth, AuthContext, AuthStatus } from "../auth";
+
+export const anchorOrigin: SnackbarOrigin = { vertical: 'top', horizontal: 'center' };
 
 export const useQuery = (): URLSearchParams => {
     const { search } = useLocation();

@@ -42,3 +42,8 @@ export interface Fund {
     goal: number;
     background_photo: string;
 }
+
+export interface Recipient {
+    address: string; // Email address
+    family_name: string;
+}

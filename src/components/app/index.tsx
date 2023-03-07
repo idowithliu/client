@@ -7,6 +7,7 @@ import { Home } from "../home";
 import { NotFound } from "../notfound";
 import { RegistryPage } from "../registry";
 import { Rsvp } from "../rsvp";
+import { Schedule } from "../schedule";
 import { Story } from "../story";
 import { Footer } from "./footer";
 import { NavBar } from "./nav";
@@ -37,6 +38,7 @@ export const _App = (): JSX.Element => {
                     <Route path="/faq" element={<Faq />} />
                     <Route path="/rsvp" element={<Rsvp />} />
                     <Route path="/about" element={<Story />} />
+                    <Route path="/schedule" element={<Schedule />} />
                     <Route path="/registry" element={<RegistryPage />} />
 
                     <Route path="/emails" element={<Emails />} />
@@ -44,8 +46,9 @@ export const _App = (): JSX.Element => {
                     <Route path="*" element={<NotFound />} />
                 </Routes>
 
-                {/* <Footer /> */}
-                <div style={{ height: "4em" }} />
+
+
+
                 {/* <iframe src="https://free.timeanddate.com/countdown/i8pa6mjd/n250/cf105/cm0/cu4/ct0/cs0/ca0/cr0/ss0/cac000/cpc000/pcfffef6/tcf1d8e7/fs100/szw320/szh135/tac000/tptTime%20since%20Event%20started%20in/tpc000/matMelanie%20and%20Andrew's%20Wedding/mac000/mpc000/iso2023-09-09T15:30:00" allowTransparency={true} frameBorder="0" width="320" height="135"></iframe> */}
             </div>
         </>

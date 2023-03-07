@@ -19,6 +19,8 @@ export const Funds = (props: { setAlertType: (type: AlertColor) => void, setAler
     const [claimerID, setClaimerID] = React.useState(0);
     const [amount, setAmount] = React.useState(0);
 
+    const [modalError, setModalError] = React.useState("");
+
     const session: Auth = React.useContext(AuthContext);
 
     React.useEffect(() => {
@@ -44,7 +46,7 @@ export const Funds = (props: { setAlertType: (type: AlertColor) => void, setAler
 
         React.useEffect((): void => {
             axios.post(Routes.REGISTRY.GET_AMOUNT, {
-                uuid: session.invite.uuid,
+                uuid: localStorage.getItem("userID"),
                 id: fund.id
             }).then((res) => {
                 setStatus(res.data.amount);
@@ -56,7 +58,12 @@ export const Funds = (props: { setAlertType: (type: AlertColor) => void, setAler
             <>
                 <Card sx={{ width: "100%", paddingBottom: "2em", border: "none" }}>
                     <CardActionArea onClick={() => {
-                        if (!session.invite.finished || status !== 0) return;
+                        if (!session.invite.finished) return;
+                        if (status !== 0) {
+                            alert("You have already gifted to this fund!", "info");
+                            return;
+                        }
+                        setModalError("");
                         setClaiming(fund.id);
                         setClaimingItem(fund);
                     }}>
@@ -96,13 +103,15 @@ export const Funds = (props: { setAlertType: (type: AlertColor) => void, setAler
                             </div>
                             <Typography variant="h6" color="text.secondary">
                                 {
-                                    status === 0 ?
-                                        <>Click to Gift!</>
-                                        :
-                                        status === -1 ?
-                                            <>Please RSVP to gift!</>
+                                    claiming < 0 && (
+                                        status === 0 ?
+                                            <>Click to Gift!</>
                                             :
-                                            <>You gifted ${status}!</>
+                                            status === -1 ?
+                                                <>Please RSVP to gift!</>
+                                                :
+                                                <>You gifted ${status}!</>
+                                    )
                                 }
                             </Typography>
                         </CardContent>
@@ -133,6 +142,10 @@ export const Funds = (props: { setAlertType: (type: AlertColor) => void, setAler
     };
 
     const submitClaimForm = (): void => {
+        if (amount <= 0) {
+            setModalError("Please enter a positive contribution amount");
+            return;
+        }
         axios.post(Routes.REGISTRY.CONTRIBUTE, {
             "id": claimingItem.id,
             "uuid": session.invite.uuid,
@@ -145,9 +158,7 @@ export const Funds = (props: { setAlertType: (type: AlertColor) => void, setAler
         }).catch((err) => {
             props.setAlertMessage("Something went wrong on our end! Please contact an administrator to get it fixed.");
             alert(err.response.data.message, "error");
-            refreshFunds();
-            setClaiming(-1);
-            setAmount(0);
+            setModalError(err.response.data.message);
         });
     }
 
@@ -195,9 +206,10 @@ export const Funds = (props: { setAlertType: (type: AlertColor) => void, setAler
                         <FormControl fullWidth>
                             <InputLabel id="amount-label"></InputLabel>
                             <TextField
-                                id="outlined-number"
                                 label="Gift Amount ($)"
                                 type="number"
+                                error={!!modalError}
+                                helperText={modalError}
                                 InputLabelProps={{
                                     shrink: true,
                                 }}

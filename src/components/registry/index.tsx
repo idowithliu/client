@@ -19,12 +19,13 @@ import DoneIcon from '@mui/icons-material/Done';
 import SaveIcon from '@mui/icons-material/Save';
 import CloseIcon from '@mui/icons-material/Close';
 import { Guest, Invite, Registry, RegistryItem } from "../../util/models";
-import { ContentBox, PasswordProtected, textTheme } from "../../util/misc";
+import { anchorOrigin, ContentBox, PasswordProtected, textTheme } from "../../util/misc";
 
 import { Link } from "react-router-dom";
 import { Auth, AuthContext } from "../../util/auth";
 import { Routes } from "../../util/routes";
 import { Funds } from "./funds";
+import { Footer } from "../app/footer";
 
 export const RegistryPage = (): JSX.Element => {
 
@@ -192,6 +193,7 @@ export const RegistryPage = (): JSX.Element => {
                 </ThemeProvider>
                 <div style={{ height: "2.5em" }} />
                 <Funds setAlertType={setAlertType} setAlertMessage={setAlertMessage} />
+                <Footer />
             </PasswordProtected>
 
             <Modal
@@ -215,7 +217,7 @@ export const RegistryPage = (): JSX.Element => {
 
                     <Typography variant="body1" marginTop="1em">
                         {/* <label htmlFor="claimer-name">To claim this registry item, please select your name below:</label> */}
-                        <label htmlFor="claimer-name">Are you sure you would like to claim this registry item?:</label>
+                        <label htmlFor="claimer-name">Are you sure you would like to claim this registry item? (Please ship the gift to Andrew Liu and Melanie Kong at <strong>38 Northgate Crescent, Richmond Hill, Ontario, Canada, L4B2K8</strong>)</label>
                     </Typography>
                     <hr />
                     <form onSubmit={(ev) => {
@@ -255,6 +257,7 @@ export const RegistryPage = (): JSX.Element => {
                 onClose={handleClose}
                 message={alertMessage}
                 action={action}
+                anchorOrigin={anchorOrigin}
             >
                 <Alert onClose={handleClose} severity={alertType} sx={{ width: '100%' }}>
                     {alertMessage}
