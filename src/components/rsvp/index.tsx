@@ -52,11 +52,11 @@ export const Rsvp = (): JSX.Element => {
                             <FormControlLabel control={<Checkbox defaultChecked={!(guest.is_attending === null) && guest.is_attending} onChange={(ev) => {
                                 const new_guest = { ...guest, is_attending: true };
                                 session.setGuest(props.index, new_guest);
-                            }} />} label="Will be attending" />
+                            }} />} label="Joyfully accepts" />
                             <FormControlLabel control={<Checkbox defaultChecked={!(guest.is_attending === null) && !guest.is_attending} onChange={(ev) => {
                                 const new_guest = { ...guest, is_attending: false };
                                 session.setGuest(props.index, new_guest);
-                            }} />} label={<>Will <strong>not</strong> be attending</>} />
+                            }} />} label={"Regretfully declines"} />
                         </div>
                         {
                             guest.is_attending &&
@@ -95,8 +95,8 @@ export const Rsvp = (): JSX.Element => {
             case AuthStatus.LOGGED_IN:
                 return (
                     <>
-                        <Typography variant="h6" gutterBottom>
-                            Currently performing RSVP for <strong>{session.invite.family_name}</strong>.
+                        <Typography variant="h5" gutterBottom>
+                            The bride and groom have reserved <strong>{session.invite.guests.length}</strong> {session.invite.guests.length === 1 ? "seat" : "seats"} for <strong>{session.invite.family_name}</strong>.
                         </Typography>
                         <Divider />
                         <div style={{ marginTop: "1em" }} />

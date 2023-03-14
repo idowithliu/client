@@ -44,6 +44,7 @@ export interface Fund {
 }
 
 export interface Recipient {
+    id: number;
     address: string; // Email address
     family_name: string;
 }
