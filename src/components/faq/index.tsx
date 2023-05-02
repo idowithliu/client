@@ -16,6 +16,9 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import EventBusyIcon from '@mui/icons-material/EventBusy';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import UnsubscribeIcon from '@mui/icons-material/Unsubscribe';
+import DepartureBoardIcon from '@mui/icons-material/DepartureBoard';
+import EventSeatIcon from '@mui/icons-material/EventSeat';
+
 import { Footer } from "../app/footer";
 
 export const Faq = (): JSX.Element => {
@@ -73,10 +76,8 @@ export const Faq = (): JSX.Element => {
                                 <FaqItem
                                     question="Where are the ceremony and reception taking place?"
                                     answer={
-                                        <>The ceremony, cocktail hour, and reception will be held on-site at the &nbsp;
-                                            <a target="_blank" href="https://www.google.com/maps/place/Sue-Ann+Staff+Estate+Winery/@43.1214508,-79.3575716,17z/data=!3m1!4b1!4m5!3m4!1s0x89d34d14ac3fcad9:0xa6e33a2711035d6d!8m2!3d43.1214469!4d-79.3553829">
-                                                <strong>Sue Ann Staff Estate and Winery</strong> in <strong>Jordan, Ontario</strong>
-                                            </a>. The ceremony will be held outdoors,
+                                        <>The ceremony, cocktail hour, and reception will be held on-site at the <a target="_blank" href="https://www.google.com/maps/place/Sue-Ann+Staff+Estate+Winery/@43.1214508,-79.3575716,17z/data=!3m1!4b1!4m5!3m4!1s0x89d34d14ac3fcad9:0xa6e33a2711035d6d!8m2!3d43.1214469!4d-79.3553829"><strong>Sue Ann Staff Estate and Winery</strong> in <strong>Jordan, Ontario</strong>
+                                        </a>. The ceremony will be held outdoors,
                                             and the reception will be held in a tent.</>
                                     }
                                     Icon={<LocationOnIcon fontSize="large" />}
@@ -127,6 +128,18 @@ export const Faq = (): JSX.Element => {
                                     question="What if I miss my RSVP deadline?"
                                     answer={<>Unfortunately, we will have sent the final numbers to our caterers already, and we will not have reserved a spot for you. We hope to celebrate with you another time!</>}
                                     Icon={<UnsubscribeIcon fontSize="large" />}
+                                />
+                                <Divider variant="inset" component="li" />
+                                <FaqItem
+                                    question="What do I do if I'm late for the ceremony?"
+                                    answer={<>The ceremony will be starting promptly at 4:00 pm, but we recommend guests arrive between 3-3:30 pm so there is time to mingle and find a seat. If you happen to be late, our coordinator will let you know if they are still allowing guests in or if you need to wait until the ceremony is over. If that happens, you will still be able to attend the reception, so hang tight and we will see you at the reception!</>}
+                                    Icon={<DepartureBoardIcon fontSize="large" />}
+                                />
+                                <Divider variant="inset" component="li" />
+                                <FaqItem
+                                    question="How does seating work?"
+                                    answer={<>Unless the chair is marked otherwise, the ceremony will be open seating, so sit wherever you please. For the reception, we will be carefully arranging tables so our guests are sitting with those they know (or their plus one or partner).</>}
+                                    Icon={<EventSeatIcon fontSize="large" />}
                                 />
                             </List>
                         </div>
