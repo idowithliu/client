@@ -38,7 +38,12 @@ export const Rsvp = (): JSX.Element => {
 
         axios.get(Routes.RSVP.RSVP_DEADLINE).then((res) => {
             const deadlineDate: Date = res.data.deadline;
-            setBeforeDeadline({value: new Date() < deadlineDate, fetched: true});
+            const value: boolean = new Date() < deadlineDate;
+            setBeforeDeadline({value: value, fetched: true});
+        
+            if (!value) {
+                alert("Sorry, the RSVP deadline has passed.", "info");
+            }
         }).catch((err) => {
             alert("Something went wrong on our end! Please contact an administrator to get it fixed.", "error");
         });
@@ -119,7 +124,7 @@ export const Rsvp = (): JSX.Element => {
                         }
 
                         <div className="form-row">
-                            <Button variant="contained" onClick={(ev) => {
+                            <Button disabled={!beforeDeadline.value} variant="contained" onClick={(ev) => {
                                 ev.preventDefault();
                                 alert("", "info");
 
