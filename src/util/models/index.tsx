@@ -48,3 +48,8 @@ export interface Recipient {
     address: string; // Email address
     family_name: string;
 }
+
+export interface FetchedValue<T> {
+    value: T;
+    fetched: boolean;
+}
