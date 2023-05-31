@@ -11,7 +11,7 @@ import Typography from '@mui/material/Typography';
 
 import { ContentBox, useQuery, textTheme, anchorOrigin } from "../../util/misc";
 
-import { Guest, Invite } from "../../util/models";
+import { FetchedValue, Guest, Invite } from "../../util/models";
 import { Auth, AuthContext, AuthStatus } from "../../util/auth";
 import { Alert, AlertColor, Button, Checkbox, Divider, FormControlLabel, FormGroup, IconButton, Snackbar, TextField, ThemeProvider } from "@mui/material";
 import { Routes } from "../../util/routes";
@@ -26,6 +26,8 @@ export const Rsvp = (): JSX.Element => {
     const [alertMessage, setAlertMessage] = React.useState("");
     const [alertType, setAlertType] = React.useState("info" as AlertColor);
 
+    const [beforeDeadline, setBeforeDeadline] = React.useState<FetchedValue<boolean>>({value: false, fetched: false});
+
     const alert = (message: string, type: AlertColor): void => {
         setAlertType(type);
         setAlertMessage(message);
@@ -33,6 +35,13 @@ export const Rsvp = (): JSX.Element => {
 
     React.useEffect(() => {
         document.title = "RSVP | Melanie and Andrew's Wedding Website";
+
+        axios.get(Routes.RSVP.RSVP_DEADLINE).then((res) => {
+            const deadlineDate: Date = res.data.deadline;
+            setBeforeDeadline({value: new Date() < deadlineDate, fetched: true});
+        }).catch((err) => {
+            alert("Something went wrong on our end! Please contact an administrator to get it fixed.", "error");
+        });
     }, []);
 
     const updateGuest = (idx: number, new_guest: Guest): void => {
@@ -49,11 +58,11 @@ export const Rsvp = (): JSX.Element => {
                 <div className="form-row">
                     <FormGroup style={{ width: "100%" }}>
                         <div className="form-row">
-                            <FormControlLabel control={<Checkbox defaultChecked={!(guest.is_attending === null) && guest.is_attending} onChange={(ev) => {
+                            <FormControlLabel control={<Checkbox disabled={!beforeDeadline.value} defaultChecked={!(guest.is_attending === null) && guest.is_attending} onChange={(ev) => {
                                 const new_guest = { ...guest, is_attending: true };
                                 session.setGuest(props.index, new_guest);
                             }} />} label="Joyfully accepts" />
-                            <FormControlLabel control={<Checkbox defaultChecked={!(guest.is_attending === null) && !guest.is_attending} onChange={(ev) => {
+                            <FormControlLabel control={<Checkbox disabled={!beforeDeadline.value} defaultChecked={!(guest.is_attending === null) && !guest.is_attending} onChange={(ev) => {
                                 const new_guest = { ...guest, is_attending: false };
                                 session.setGuest(props.index, new_guest);
                             }} />} label={"Regretfully declines"} />
@@ -61,7 +70,8 @@ export const Rsvp = (): JSX.Element => {
                         {
                             guest.is_attending &&
                             <TextField
-                                id="outlined-disabled"
+                                id="dietary-restrictions"
+                                disabled={!beforeDeadline.value}
                                 label="Dietary Restrictions (optional)"
                                 defaultValue={guest.dietary_restrictions}
                                 fullWidth={true}
