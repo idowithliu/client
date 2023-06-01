@@ -26,7 +26,7 @@ export const Rsvp = (): JSX.Element => {
     const [alertMessage, setAlertMessage] = React.useState("");
     const [alertType, setAlertType] = React.useState("info" as AlertColor);
 
-    const [beforeDeadline, setBeforeDeadline] = React.useState<FetchedValue<boolean>>({value: false, fetched: false});
+    const [beforeDeadline, setBeforeDeadline] = React.useState<FetchedValue<boolean>>({ value: false, fetched: false });
 
     const alert = (message: string, type: AlertColor): void => {
         setAlertType(type);
@@ -37,10 +37,10 @@ export const Rsvp = (): JSX.Element => {
         document.title = "RSVP | Melanie and Andrew's Wedding Website";
 
         axios.get(Routes.RSVP.RSVP_DEADLINE).then((res) => {
-            const deadlineDate: Date = res.data.deadline;
+            const deadlineDate: Date = new Date(res.data.deadline);
             const value: boolean = new Date() < deadlineDate;
-            setBeforeDeadline({value: value, fetched: true});
-        
+            setBeforeDeadline({ value: value, fetched: true });
+
             if (!value) {
                 alert("Sorry, the RSVP deadline has passed.", "info");
             }
