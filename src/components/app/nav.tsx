@@ -8,7 +8,8 @@ export const NavBar = (): JSX.Element => {
         { id: 2, url: "/about", text: "Our Story" },
         { id: 3, url: "/schedule", text: "Schedule" },
         { id: 4, url: "/faq", text: "FAQs" },
-        { id: 5, url: "/rsvp", text: "RSVP" },
+        { id: 5, url: "/photos", text: "Photo Gallery" },
+        // { id: 5, url: "/rsvp", text: "RSVP" },
         { id: 6, url: "/registry", text: "Registry" },
     ];
 

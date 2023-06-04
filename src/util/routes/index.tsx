@@ -18,5 +18,8 @@ export const Routes = {
         DRY_RUN: `${BASEURL}/api/invites/dry-run/`,
         SEND_SPECIFIC: `${BASEURL}/api/invites/send-specific/`,
         RSVP_DEADLINE: `${BASEURL}/api/invites/rsvp-deadline/`,
+    },
+    PHOTOS: {
+        LIST: `${BASEURL}/api/photos/photos/`,
     }
 }

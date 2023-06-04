@@ -49,6 +49,11 @@ export interface Recipient {
     family_name: string;
 }
 
+export interface Photo {
+    id: number;
+    image: string; // URL to image
+}
+
 export interface FetchedValue<T> {
     value: T;
     fetched: boolean;

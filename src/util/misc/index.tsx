@@ -11,9 +11,9 @@ export const useQuery = (): URLSearchParams => {
     return React.useMemo(() => new URLSearchParams(search), [search]);
 }
 
-export const ContentBox = (props: { children: React.ReactNode }): JSX.Element => {
+export const ContentBox = (props: { children: React.ReactNode, maxWidth?: number }): JSX.Element => {
     return (
-        <Box className="shadowed" sx={{ width: '100%', maxWidth: 750, backgroundColor: "#fffef6", padding: "2em", fontFamily: "Cormorant Garamond", boxShadow: "60px -16px teal" }}>
+        <Box className="shadowed" sx={{ width: '100%', maxWidth: props.maxWidth || 750, backgroundColor: "#fffef6", padding: "2em", fontFamily: "Cormorant Garamond", boxShadow: "60px -16px teal" }}>
             {props.children}
         </Box>
     );

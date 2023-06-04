@@ -143,7 +143,9 @@ export const Rsvp = (): JSX.Element => {
                                 }).catch((err) => {
                                     setAlertMessage("Something went wrong on our end! Please contact an administrator to get it fixed.");
                                     setAlertType("error");
-                                    setAlertMessage(err.response.data.message);
+                                    if (!!err.response.data.message) {
+                                        setAlertMessage(err.response.data.message);
+                                    }
                                 });
                             }}>Submit RSVP!</Button>
                             {alertMessage && <Alert severity={alertType as AlertColor} >{alertMessage}</Alert>}
