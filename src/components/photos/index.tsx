@@ -12,6 +12,7 @@ import { Footer } from "../app/footer";
 
 export const Photos = (): JSX.Element => {
     const [images, setImages] = React.useState<Array<Photo>>([]);
+    const defaultImage = "/resources/img/default.png";
 
     const loadImage = (photoNumber: number, images: Array<Photo>): void => {
         const sourceImage: Photo = images[photoNumber];
@@ -19,7 +20,7 @@ export const Photos = (): JSX.Element => {
         let imageHTMLElement = document.getElementById(`gallery-image-${sourceImage.id}`);
 
         // @ts-expect-error
-        if (imageHTMLElement.src) { // If image was already loaded, skip
+        if (!imageHTMLElement.src.endsWith(defaultImage)) { // If image was already loaded, skip
             return;
         }
 
@@ -55,7 +56,7 @@ export const Photos = (): JSX.Element => {
                                 images.map((photo: Photo, idx: number): JSX.Element => {
                                     return (
                                         <div className={`carousel-item${idx === 0 ? ' active' : ''}`} key={photo.id}>
-                                            <img className="d-block w-100" id={`gallery-image-${photo.id}`} data-src={photo.image} alt="Photo Gallery Image" />
+                                            <img className="d-block w-100" id={`gallery-image-${photo.id}`} data-src={photo.image} src={idx <= 1 ? photo.image : defaultImage} alt="Photo Gallery Image" />
                                         </div>
                                     );
                                 })
