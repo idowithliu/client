@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "start": "npx vite",
+    "build": "npx vite build"
+  },
   "dependencies": {
     "@codemirror/lang-html": "^6.4.1",
     "@emotion/react": "^11.10.5",
