@@ -10,6 +10,7 @@
     "@uiw/react-codemirror": "^4.19.7",
     "@vitejs/plugin-react": "^3.0.0",
     "axios": "^1.2.1",
+    "jquery": "^3.7.0",
     "mui-image-slider": "^1.0.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -17,5 +18,8 @@
     "sass": "^1.56.2",
     "vite": "^4.0.1",
     "vite-tsconfig-paths": "^4.0.3"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.5.16"
   }
 }

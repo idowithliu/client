@@ -52,7 +52,7 @@ export const RegistryPage = (): JSX.Element => {
                     setClaimerID(0);
                 }}>
                     <ListItemText primary={<Typography variant="h6">{`${props.index}.`}{!props.item.claimer ? props.item.name : <s>{props.item.name}</s>}</Typography>} />
-                    {claimer && <Typography variant="body1">Claimed by: {claimer.family_name}</Typography>}
+                    {claimer && <Typography variant="body1">Claimed by you</Typography>}
                     <ListItemIcon>
                         {!props.item.claimer ? <CheckBoxOutlineBlankIcon /> : (!claimer ? <DoneIcon /> : <CheckBoxIcon />)}
                     </ListItemIcon>
@@ -217,7 +217,7 @@ export const RegistryPage = (): JSX.Element => {
 
                     <Typography variant="body1" marginTop="1em">
                         {/* <label htmlFor="claimer-name">To claim this registry item, please select your name below:</label> */}
-                        <label htmlFor="claimer-name">Are you sure you would like to claim this registry item? (Please ship the gift to Andrew Liu and Melanie Kong at <strong>38 Northgate Crescent, Richmond Hill, Ontario, Canada, L4B2K8</strong>)</label>
+                        <label htmlFor="claimer-name">Are you sure you would like to claim this registry item? (Please ship the gift to Andrew Liu and Melanie Kong at <strong>38 Northgate Crescent, Richmond Hill, Ontario, Canada, L4B2K8</strong>). It will be claimed anonymously.</label>
                     </Typography>
                     <hr />
                     <form onSubmit={(ev) => {
