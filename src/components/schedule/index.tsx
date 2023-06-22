@@ -20,7 +20,7 @@ import { Footer } from "../app/footer";
 
 export const Schedule = (): JSX.Element => {
     React.useEffect(() => {
-        document.title = "Q & A | Melanie and Andrew's Wedding Website";
+        document.title = "Schedule | Melanie and Andrew's Wedding Website";
     }, []);
 
     const textSpec = {

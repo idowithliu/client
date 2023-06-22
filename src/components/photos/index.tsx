@@ -11,6 +11,10 @@ import { Routes } from "../../util/routes";
 import { Footer } from "../app/footer";
 
 export const Photos = (): JSX.Element => {
+    React.useEffect(() => {
+        document.title = "Photo Gallery | Melanie and Andrew's Wedding Website";
+    }, []);
+
     const [images, setImages] = React.useState<Array<Photo>>([]);
     const defaultImage = "/resources/img/default.png";
 
